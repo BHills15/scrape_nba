@@ -1,6 +1,5 @@
 import json
 import urllib2
-import pandas as pd
 
 class PlayerData:
     def __init__(self, player_id):
@@ -11,5 +10,7 @@ class PlayerData:
         self._shot_logs_data = json.loads(self._shot_logs_response.read())
 
     def shot_logs(self):
-        # dataframe won't have player id
-        return pd.DataFrame(self._shot_logs_data['resultSets'][0]['rowSet'], columns=self._shot_logs_data['resultSets'][0]['headers'])
+        # won't have player id
+        _headers = self._pbp_data['resultSets'][0]['headers']
+        _rows = self._pbp_data['resultSets'][0]['rowSet']
+        return [dict(zip(_headers, row)) for row in _rows]
