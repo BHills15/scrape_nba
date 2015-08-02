@@ -1,6 +1,5 @@
 import json
 import urllib2
-import pandas as pd
 
 class GameData:
     def __init__(self, game_id):
@@ -14,6 +13,10 @@ class GameData:
         self.player_tracking_boxscore_data = json.loads(self.player_tracking_boxscore_response.read())
 
         self.teams = [self.player_tracking_boxscore_team()[0]['TEAM_ID'], self.player_tracking_boxscore_team()[1]['TEAM_ID']]
+
+        self.traditional_boxscore_url = "http://stats.nba.com/stats/boxscoretraditionalv2?GameId="+game_id+"&StartPeriod=0&EndPeriod=10&RangeType=2&StartRange=0&EndRange=55800"
+        self.traditional_boxscore_response = urllib2.urlopen(self.traditional_boxscore_url)
+        self.traditional_boxscore_data = json.loads(self.traditional_boxscore_response.read())
 
     def pbp(self):
         headers = self.pbp_data['resultSets'][0]['headers']
@@ -30,7 +33,6 @@ class GameData:
         rows = self.player_tracking_boxscore_data['resultSets'][1]['rowSet']
         return [dict(zip(headers, row)) for row in rows]
 
-
     def shots(self):
         shots = []
         for team in self.teams:
@@ -41,3 +43,13 @@ class GameData:
             rows = shots_data['resultSets'][0]['rowSet']
             shots += [dict(zip(headers, row)) for row in rows]
         return shots
+
+    def traditional_boxscore(self):
+        headers = self.traditional_boxscore_data['resultSets'][0]['headers']
+        rows = self.traditional_boxscore_data['resultSets'][0]['rowSet']
+        return [dict(zip(headers, row)) for row in rows]
+
+    def traditional_boxscore_team(self):
+        headers = self.traditional_boxscore_data['resultSets'][1]['headers']
+        rows = self.traditional_boxscore_data['resultSets'][1]['rowSet']
+        return [dict(zip(headers, row)) for row in rows]
