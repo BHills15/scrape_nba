@@ -162,4 +162,31 @@ class Db:
         );'
         cursor.execute(player_tracking_boxscores_team_query)
 
+        shots_query = 'CREATE TABLE IF NOT EXISTS shots\
+        (\
+        GRID_TYPE VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GAME_EVENT_ID INT,\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        PERIOD INT,\
+        MINUTES_REMAINING INT,\
+        SECONDS_REMAINING INT,\
+        EVENT_TYPE VARCHAR(255),\
+        ACTION_TYPE VARCHAR(255),\
+        SHOT_TYPE VARCHAR(255),\
+        SHOT_ZONE_BASIC VARCHAR(255),\
+        SHOT_ZONE_AREA VARCHAR(255),\
+        SHOT_ZONE_RANGE VARCHAR(255),\
+        SHOT_DISTANCE INT,\
+        LOC_X INT,\
+        LOC_Y INT,\
+        SHOT_ATTEMPTED_FLAG BOOLEAN,\
+        SHOT_MADE_FLAG BOOLEAN,\
+        PRIMARY KEY(GAME_ID, GAME_EVENT_ID)\
+        );'
+        cursor.execute(shots_query)
+
         conn.close()
