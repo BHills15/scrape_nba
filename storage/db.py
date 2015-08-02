@@ -1,5 +1,44 @@
 import MySQLdb
 
+class Storage:
+
+    def __init__(self, host, user, pw, db):
+        self._host=host
+        self._user=user
+        self._pw=pw
+        self._db=db
+        self.conn = MySQLdb.connect(host, user, pw, db)
+
+    def insert(self, data, table_name):
+        for line in data:
+            headers = [key for key,val in sorted(line.items())]
+            quoted_values = ['"%s"' % (val) for key,val in sorted(line.items())]
+            duplicate_key_clauses = ['`%s`="%s"' % (key,val) for key,val in sorted(line.items())]
+            for i in range(len(headers)):
+                headers[i] = "`" + headers[i] + "`"
+            self.query("""
+                INSERT INTO %s
+                (%s)
+                VALUES (%s)
+                ON DUPLICATE KEY UPDATE
+                %s
+            """ % (table_name, ','.join(headers), ','.join(quoted_values),','.join(duplicate_key_clauses)))
+
+    def close(self):
+        return self.conn.close()
+
+    def query(self, sql):
+        curs = self.curs()
+        curs.execute(sql)
+
+        return curs.fetchall()
+
+    def curs(self):
+        return self.conn.cursor()
+
+    def commit(self):
+        return self.conn.commit()
+
 class Db:
     def __init__(self, host, user, pw, db):
         self._host=host
@@ -17,7 +56,7 @@ class Db:
     def create_tables(self):
         conn = MySQLdb.connect(host=self._host, user=self._user, passwd=self._pw, db=self._db)
         cursor = conn.cursor()
-        query = 'CREATE TABLE IF NOT EXISTS pbp\
+        pbp_query = 'CREATE TABLE IF NOT EXISTS pbp\
         (\
         GAME_ID VARCHAR(255),\
         EVENTNUM INT,\
@@ -54,49 +93,73 @@ class Db:
         PLAYER3_TEAM_ABBREVIATION VARCHAR(255),\
         PRIMARY KEY(GAME_ID, EVENTNUM)\
         );'
-        cursor.execute(query)
+        cursor.execute(pbp_query)
+
+        player_tracking_boxscores_query = 'CREATE TABLE IF NOT EXISTS player_tracking_boxscores\
+        (\
+        GAME_ID VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        START_POSITION VARCHAR(255),\
+        COMMENT VARCHAR(255),\
+        MIN VARCHAR(255),\
+        SPD DOUBLE,\
+        DIST DOUBLE,\
+        ORBC INT,\
+        DRBC INT,\
+        RBC INT,\
+        TCHS INT,\
+        SAST INT,\
+        FTAST INT,\
+        PASS INT,\
+        AST INT,\
+        CFGM INT,\
+        CFGA INT,\
+        CFG_PCT DOUBLE,\
+        UFGM INT,\
+        UFGA INT,\
+        UFG_PCT DOUBLE,\
+        FG_PCT DOUBLE,\
+        DFGM INT,\
+        DFGA INT,\
+        DFG_PCT DOUBLE,\
+        PRIMARY KEY(GAME_ID, PLAYER_ID)\
+        );'
+        cursor.execute(player_tracking_boxscores_query)
+
+        player_tracking_boxscores_team_query = 'CREATE TABLE IF NOT EXISTS player_tracking_boxscores_team\
+        (\
+        GAME_ID VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NICKNAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        MIN VARCHAR(255),\
+        SPD DOUBLE,\
+        DIST DOUBLE,\
+        ORBC INT,\
+        DRBC INT,\
+        RBC INT,\
+        TCHS INT,\
+        SAST INT,\
+        FTAST INT,\
+        PASS INT,\
+        AST INT,\
+        CFGM INT,\
+        CFGA INT,\
+        CFG_PCT DOUBLE,\
+        UFGM INT,\
+        UFGA INT,\
+        UFG_PCT DOUBLE,\
+        FG_PCT DOUBLE,\
+        DFGM INT,\
+        DFGA INT,\
+        DFG_PCT DOUBLE,\
+        PRIMARY KEY(GAME_ID, TEAM_ID)\
+        );'
+        cursor.execute(player_tracking_boxscores_team_query)
+
         conn.close()
-        
-
-class Storage:
-
-    def __init__(self, host, user, pw, db):
-        self._host=host
-        self._user=user
-        self._pw=pw
-        self._db=db
-        self.conn = MySQLdb.connect(host, user, pw, db)
-        
-    def insert(self, data, table_name):
-        for line in data:
-            headers = [key for key,val in sorted(line.items())]
-            quoted_values = ['"%s"' % (val) for key,val in sorted(line.items())]
-            duplicate_key_clauses = ['`%s`="%s"' % (key,val) for key,val in sorted(line.items())]
-            for i in range(len(headers)):
-                headers[i] = "`" + headers[i] + "`"
-            self.query("""
-                INSERT INTO %s
-                (%s)
-                VALUES (%s)
-                ON DUPLICATE KEY UPDATE
-                %s
-            """ % (table_name, ','.join(headers), ','.join(quoted_values),','.join(duplicate_key_clauses)))
-
-
-    def close(self):
-        return self.conn.close()
-
-    def query(self, sql):
-        curs = self.curs()
-        curs.execute(sql)
-        
-        return curs.fetchall()
-
-
-    def curs(self):
-        return self.conn.cursor()
-
-    def commit(self):
-        return self.conn.commit()
-
-    
