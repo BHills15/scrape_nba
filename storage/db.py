@@ -1074,5 +1074,31 @@ class Db:
         cursor.execute('CREATE TABLE IF NOT EXISTS synergy_put_back_offense LIKE synergy_transition_offense')
         cursor.execute('CREATE TABLE IF NOT EXISTS synergy_misc_offense LIKE synergy_transition_offense')
 
+        player_tracking_shot_logs_query = 'CREATE TABLE IF NOT EXISTS player_tracking_shot_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        MATCHUP VARCHAR(255),\
+        LOCATION VARCHAR(255),\
+        W VARCHAR(255),\
+        FINAL_MARGIN INT,\
+        SHOT_NUMBER INT,\
+        PERIOD INT,\
+        GAME_CLOCK VARCHAR(255),\
+        SHOT_CLOCK VARCHAR(255),\
+        DRIBBLES INT,\
+        TOUCH_TIME DOUBLE,\
+        SHOT_DIST DOUBLE,\
+        PTS_TYPE INT,\
+        SHOT_RESULT VARCHAR(255),\
+        CLOSEST_DEFENDER VARCHAR(255),\
+        CLOSEST_DEFENDER_PLAYER_ID VARCHAR(255),\
+        CLOSE_DEF_DIST DOUBLE,\
+        FGM BOOLEAN,\
+        PTS INT,\
+        PRIMARY KEY(PLAYER_ID, GAME_ID, SHOT_NUMBER)\
+        );'
+        cursor.execute(player_tracking_shot_logs_query)
+
         conn.commit()
         conn.close()
