@@ -1,4 +1,5 @@
 import MySQLdb
+import time
 
 class Storage:
 
@@ -11,6 +12,22 @@ class Storage:
 
     def insert(self, data, table_name):
         for line in data:
+            headers = [key for key,val in sorted(line.items())]
+            quoted_values = ['"%s"' % (val) for key,val in sorted(line.items())]
+            duplicate_key_clauses = ['`%s`="%s"' % (key,val) for key,val in sorted(line.items())]
+            for i in range(len(headers)):
+                headers[i] = "`" + headers[i] + "`"
+            self.query("""
+                INSERT INTO %s
+                (%s)
+                VALUES (%s)
+                ON DUPLICATE KEY UPDATE
+                %s
+            """ % (table_name, ','.join(headers), ','.join(quoted_values),','.join(duplicate_key_clauses)))
+
+    def insert_with_date(self, data, table_name):
+        for line in data:
+            line['DATE'] = time.strftime("%Y-%m-%d")
             headers = [key for key,val in sorted(line.items())]
             quoted_values = ['"%s"' % (val) for key,val in sorted(line.items())]
             duplicate_key_clauses = ['`%s`="%s"' % (key,val) for key,val in sorted(line.items())]
@@ -494,5 +511,459 @@ class Db:
         PRIMARY KEY(GAME_ID, TEAM_ID)\
         );'
         cursor.execute(four_factors_boxscores_team_query)
+
+        catch_shoot_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_catch_shoot\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER VARCHAR(255),\
+        FIRST_NAME VARCHAR(255),\
+        LAST_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        PTS DOUBLE,\
+        FGM DOUBLE,\
+        FGA DOUBLE,\
+        FG_PCT DOUBLE,\
+        FG3M DOUBLE,\
+        FG3A DOUBLE,\
+        FG3_PCT DOUBLE,\
+        EFG_PCT DOUBLE,\
+        PTS_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        );'
+        cursor.execute(catch_shoot_sportvu_query)
+
+        catch_shoot_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_catch_shoot_team\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CODE VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        PTS DOUBLE,\
+        FGM DOUBLE,\
+        FGA DOUBLE,\
+        FG_PCT DOUBLE,\
+        FG3M DOUBLE,\
+        FG3A DOUBLE,\
+        FG3_PCT DOUBLE,\
+        EFG_PCT DOUBLE,\
+        PTS_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(TEAM_ID, `DATE`)\
+        );'
+        cursor.execute(catch_shoot_sportvu_team_query)
+
+        defense_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_defense\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER VARCHAR(255),\
+        FIRST_NAME VARCHAR(255),\
+        LAST_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        BLK DOUBLE,\
+        STL DOUBLE,\
+        FGM_DEFEND_RIM DOUBLE,\
+        FGA_DEFEND_RIM DOUBLE,\
+        FGP_DEFEND_RIM DOUBLE,\
+        BLK_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        );'
+        cursor.execute(defense_sportvu_query)
+
+        defense_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_defense_team\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CODE VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        BLK DOUBLE,\
+        STL DOUBLE,\
+        FGM_DEFEND_RIM DOUBLE,\
+        FGA_DEFEND_RIM DOUBLE,\
+        FGP_DEFEND_RIM DOUBLE,\
+        BLK_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(TEAM_ID, `DATE`)\
+        );'
+        cursor.execute(defense_sportvu_team_query)
+
+        drives_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_drives\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER VARCHAR(255),\
+        FIRST_NAME VARCHAR(255),\
+        LAST_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        DVS DOUBLE,\
+        DPP DOUBLE,\
+        DTP DOUBLE,\
+        FG_PCT DOUBLE,\
+        PTS_48 DOUBLE,\
+        DPP_TOT INT,\
+        DVS_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        );'
+        cursor.execute(drives_sportvu_query)
+
+        drives_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_drives_team\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CODE VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        DVS DOUBLE,\
+        DPP DOUBLE,\
+        DTP DOUBLE,\
+        FG_PCT DOUBLE,\
+        PTS_48 DOUBLE,\
+        DPP_TOT INT,\
+        DVS_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(TEAM_ID, `DATE`)\
+        );'
+        cursor.execute(drives_sportvu_team_query)
+
+        passing_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_passing\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER VARCHAR(255),\
+        FIRST_NAME VARCHAR(255),\
+        LAST_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        PASS DOUBLE,\
+        AST DOUBLE,\
+        AST_FT DOUBLE,\
+        AST_SEC DOUBLE,\
+        AST_POT DOUBLE,\
+        PTS_CRT DOUBLE,\
+        PTS_CRT_48 DOUBLE,\
+        AST_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        );'
+        cursor.execute(passing_sportvu_query)
+
+        passing_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_passing_team\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CODE VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        PASS DOUBLE,\
+        AST DOUBLE,\
+        AST_FT DOUBLE,\
+        AST_SEC DOUBLE,\
+        AST_POT DOUBLE,\
+        PTS_CRT DOUBLE,\
+        PTS_CRT_48 DOUBLE,\
+        AST_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(TEAM_ID, `DATE`)\
+        );'
+        cursor.execute(passing_sportvu_team_query)
+
+        pull_up_shoot_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_pull_up_shoot\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER VARCHAR(255),\
+        FIRST_NAME VARCHAR(255),\
+        LAST_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        PTS DOUBLE,\
+        FGM DOUBLE,\
+        FGA DOUBLE,\
+        FG_PCT DOUBLE,\
+        FG3M DOUBLE,\
+        FG3A DOUBLE,\
+        FG3_PCT DOUBLE,\
+        EFG_PCT DOUBLE,\
+        PTS_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        );'
+        cursor.execute(pull_up_shoot_sportvu_query)
+
+        pull_up_shoot_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_pull_up_shoot_team\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CODE VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        PTS DOUBLE,\
+        FGM DOUBLE,\
+        FGA DOUBLE,\
+        FG_PCT DOUBLE,\
+        FG3M DOUBLE,\
+        FG3A DOUBLE,\
+        FG3_PCT DOUBLE,\
+        EFG_PCT DOUBLE,\
+        PTS_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(TEAM_ID, `DATE`)\
+        );'
+        cursor.execute(pull_up_shoot_sportvu_team_query)
+
+        rebounding_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_rebounding\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER VARCHAR(255),\
+        FIRST_NAME VARCHAR(255),\
+        LAST_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        REB DOUBLE,\
+        REB_CHANCE DOUBLE,\
+        REB_COL_PCT DOUBLE,\
+        REB_CONTESTED DOUBLE,\
+        REB_UNCONTESTED DOUBLE,\
+        REB_UNCONTESTED_PCT DOUBLE,\
+        REB_TOT INT,\
+        OREB DOUBLE,\
+        OREB_CHANCE DOUBLE,\
+        OREB_COL_PCT DOUBLE,\
+        OREB_CONTESTED DOUBLE,\
+        OREB_UNCONTESTED DOUBLE,\
+        OREB_UNCONTESTED_PCT DOUBLE,\
+        DREB DOUBLE,\
+        DREB_CHANCE DOUBLE,\
+        DREB_COL_PCT DOUBLE,\
+        DREB_CONTESTED DOUBLE,\
+        DREB_UNCONTESTED DOUBLE,\
+        DREB_UNCONTESTED_PCT DOUBLE,\
+        `DATE` DATE,\
+        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        );'
+        cursor.execute(rebounding_sportvu_query)
+
+        rebounding_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_rebounding_team\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CODE VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        REB DOUBLE,\
+        REB_CHANCE DOUBLE,\
+        REB_COL_PCT DOUBLE,\
+        REB_CONTESTED DOUBLE,\
+        REB_UNCONTESTED DOUBLE,\
+        REB_UNCONTESTED_PCT DOUBLE,\
+        REB_TOT INT,\
+        OREB DOUBLE,\
+        OREB_CHANCE DOUBLE,\
+        OREB_COL_PCT DOUBLE,\
+        OREB_CONTESTED DOUBLE,\
+        OREB_UNCONTESTED DOUBLE,\
+        OREB_UNCONTESTED_PCT DOUBLE,\
+        DREB DOUBLE,\
+        DREB_CHANCE DOUBLE,\
+        DREB_COL_PCT DOUBLE,\
+        DREB_CONTESTED DOUBLE,\
+        DREB_UNCONTESTED DOUBLE,\
+        DREB_UNCONTESTED_PCT DOUBLE,\
+        `DATE` DATE,\
+        PRIMARY KEY(TEAM_ID, `DATE`)\
+        );'
+        cursor.execute(rebounding_sportvu_team_query)
+
+        shooting_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_shooting\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER VARCHAR(255),\
+        FIRST_NAME VARCHAR(255),\
+        LAST_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        PTS DOUBLE,\
+        PTS_DRIVE DOUBLE,\
+        FGP_DRIVE DOUBLE,\
+        PTS_CLOSE DOUBLE,\
+        FGP_CLOSE DOUBLE,\
+        PTS_CATCH_SHOOT DOUBLE,\
+        FGP_CATCH_SHOOT DOUBLE,\
+        PTS_PULL_UP DOUBLE,\
+        FGP_PULL_UP DOUBLE,\
+        FGA_DRIVE DOUBLE,\
+        FGA_CLOSE DOUBLE,\
+        FGA_CATCH_SHOOT DOUBLE,\
+        FGA_PULL_UP DOUBLE,\
+        EFG_PCT DOUBLE,\
+        CFGM DOUBLE,\
+        CFGA DOUBLE,\
+        CFGP DOUBLE,\
+        UFGM DOUBLE,\
+        UFGA DOUBLE,\
+        UFGP DOUBLE,\
+        CFG3M DOUBLE,\
+        CFG3A DOUBLE,\
+        CFG3P DOUBLE,\
+        UFG3M DOUBLE,\
+        UFG3A DOUBLE,\
+        UFG3P DOUBLE,\
+        `DATE` DATE,\
+        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        );'
+        cursor.execute(shooting_sportvu_query)
+
+        shooting_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_shooting_team\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CODE VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        PTS DOUBLE,\
+        PTS_DRIVE DOUBLE,\
+        FGP_DRIVE DOUBLE,\
+        PTS_CLOSE DOUBLE,\
+        FGP_CLOSE DOUBLE,\
+        PTS_CATCH_SHOOT DOUBLE,\
+        FGP_CATCH_SHOOT DOUBLE,\
+        PTS_PULL_UP DOUBLE,\
+        FGP_PULL_UP DOUBLE,\
+        FGA_DRIVE DOUBLE,\
+        FGA_CLOSE DOUBLE,\
+        FGA_CATCH_SHOOT DOUBLE,\
+        FGA_PULL_UP DOUBLE,\
+        EFG_PCT DOUBLE,\
+        CFGM DOUBLE,\
+        CFGA DOUBLE,\
+        CFGP DOUBLE,\
+        UFGM DOUBLE,\
+        UFGA DOUBLE,\
+        UFGP DOUBLE,\
+        CFG3M DOUBLE,\
+        CFG3A DOUBLE,\
+        CFG3P DOUBLE,\
+        UFG3M DOUBLE,\
+        UFG3A DOUBLE,\
+        UFG3P DOUBLE,\
+        `DATE` DATE,\
+        PRIMARY KEY(TEAM_ID, `DATE`)\
+        );'
+        cursor.execute(shooting_sportvu_team_query)
+
+        speed_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_speed\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER VARCHAR(255),\
+        FIRST_NAME VARCHAR(255),\
+        LAST_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        DIST DOUBLE,\
+        AV_SPD DOUBLE,\
+        DIST_PG DOUBLE,\
+        DIST_48 DOUBLE,\
+        DIST_OFF DOUBLE,\
+        DIST_DEF DOUBLE,\
+        AV_SPD_OFF DOUBLE,\
+        AV_SPD_DEF DOUBLE,\
+        `DATE` DATE,\
+        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        );'
+        cursor.execute(speed_sportvu_query)
+
+        speed_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_speed_team\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CODE VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        DIST DOUBLE,\
+        AV_SPD DOUBLE,\
+        DIST_PG DOUBLE,\
+        DIST_48 DOUBLE,\
+        DIST_OFF DOUBLE,\
+        DIST_DEF DOUBLE,\
+        AV_SPD_OFF DOUBLE,\
+        AV_SPD_DEF DOUBLE,\
+        `DATE` DATE,\
+        PRIMARY KEY(TEAM_ID, `DATE`)\
+        );'
+        cursor.execute(speed_sportvu_team_query)
+
+        touches_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_touches\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER VARCHAR(255),\
+        FIRST_NAME VARCHAR(255),\
+        LAST_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        TCH DOUBLE,\
+        FC_TCH DOUBLE,\
+        TOP DOUBLE,\
+        CL_TCH DOUBLE,\
+        EL_TCH DOUBLE,\
+        PTS DOUBLE,\
+        PTS_TCH DOUBLE,\
+        PTS_HCCT DOUBLE,\
+        TCH_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        );'
+        cursor.execute(touches_sportvu_query)
+
+        touches_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_touches_team\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CODE VARCHAR(255),\
+        GP INT,\
+        MIN DOUBLE,\
+        TCH DOUBLE,\
+        FC_TCH DOUBLE,\
+        TOP DOUBLE,\
+        CL_TCH DOUBLE,\
+        EL_TCH DOUBLE,\
+        PTS DOUBLE,\
+        PTS_TCH DOUBLE,\
+        PTS_HCCT DOUBLE,\
+        TCH_TOT INT,\
+        `DATE` DATE,\
+        PRIMARY KEY(TEAM_ID, `DATE`)\
+        );'
+        cursor.execute(touches_sportvu_team_query)
 
         conn.close()
