@@ -2,7 +2,6 @@ import MySQLdb
 import time
 
 class Storage:
-
     def __init__(self, host, user, pw, db):
         self._host=host
         self._user=user
@@ -966,4 +965,114 @@ class Db:
         );'
         cursor.execute(touches_sportvu_team_query)
 
+        transition_team_query = 'CREATE TABLE IF NOT EXISTS synergy_transition_team_offense\
+        (\
+        TeamIDSID VARCHAR(255),\
+        TeamName VARCHAR(255),\
+        TeamNameAbbreviation VARCHAR(255),\
+        TeamShortName VARCHAR(255),\
+        GP INT,\
+        Poss INT,\
+        `Time` DOUBLE,\
+        Points INT,\
+        FGA INT,\
+        FGM INT,\
+        PPP DOUBLE,\
+        WorsePPP INT,\
+        BetterPPP INT,\
+        PossG DOUBLE,\
+        PPG DOUBLE,\
+        FGAG DOUBLE,\
+        FGMG DOUBLE,\
+        FG_mG DOUBLE,\
+        FG_m DOUBLE,\
+        FG DOUBLE,\
+        aFG DOUBLE,\
+        FT DOUBLE,\
+        `TO` DOUBLE,\
+        SF DOUBLE,\
+        PlusOne DOUBLE,\
+        Score DOUBLE,\
+        `DATE` DATE,\
+        PRIMARY KEY(TeamIDSID, `DATE`)\
+        );'
+        cursor.execute(transition_team_query)
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_transition_team_defense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_isolation_team_offense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_isolation_team_defense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_pr_ball_handler_team_offense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_pr_ball_handler_team_defense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_pr_roll_man_team_offense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_pr_roll_man_team_defense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_post_up_team_offense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_post_up_team_defense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_spot_up_team_offense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_spot_up_team_defense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_handoff_team_offense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_handoff_team_defense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_cut_team_offense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_cut_team_defense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_off_screen_team_offense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_off_screen_team_defense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_put_back_team_offense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_put_back_team_defense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_misc_team_offense LIKE synergy_transition_team_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_misc_team_defense LIKE synergy_transition_team_offense')
+
+        transition_query = 'CREATE TABLE IF NOT EXISTS synergy_transition_offense\
+        (\
+        PlayerIDSID VARCHAR(255),\
+        PlayerFirstName VARCHAR(255),\
+        PlayerLastName VARCHAR(255),\
+        PlayerNumber VARCHAR(255),\
+        P VARCHAR(255),\
+        TeamIDSID VARCHAR(255),\
+        TeamName VARCHAR(255),\
+        TeamNameAbbreviation VARCHAR(255),\
+        TeamShortName VARCHAR(255),\
+        GP INT,\
+        Poss INT,\
+        `Time` DOUBLE,\
+        Points INT,\
+        FGA INT,\
+        FGM INT,\
+        PPP DOUBLE,\
+        WorsePPP INT,\
+        BetterPPP INT,\
+        PossG DOUBLE,\
+        PPG DOUBLE,\
+        FGAG DOUBLE,\
+        FGMG DOUBLE,\
+        FG_mG DOUBLE,\
+        FG_m DOUBLE,\
+        FG DOUBLE,\
+        aFG DOUBLE,\
+        FT DOUBLE,\
+        `TO` DOUBLE,\
+        SF DOUBLE,\
+        PlusOne DOUBLE,\
+        Score DOUBLE,\
+        `DATE` DATE,\
+        PRIMARY KEY(PlayerIDSID, TeamIDSID, `DATE`)\
+        );'
+        cursor.execute(transition_query)
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_isolation_offense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_isolation_defense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_pr_ball_handler_offense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_pr_ball_handler_defense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_pr_roll_man_offense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_pr_roll_man_defense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_post_up_offense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_post_up_defense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_spot_up_offense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_spot_up_defense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_handoff_offense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_handoff_defense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_cut_offense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_off_screen_offense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_off_screen_defense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_put_back_offense LIKE synergy_transition_offense')
+        cursor.execute('CREATE TABLE IF NOT EXISTS synergy_misc_offense LIKE synergy_transition_offense')
+
+        conn.commit()
         conn.close()
