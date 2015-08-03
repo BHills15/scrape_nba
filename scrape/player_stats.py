@@ -10,7 +10,7 @@ class PlayerData:
         self.shot_logs_data = json.loads(self.shot_logs_response.read())
 
     def shot_logs(self):
-        # won't have player id
-        headers = self.pbp_data['resultSets'][0]['headers']
-        rows = self.pbp_data['resultSets'][0]['rowSet']
-        return [dict(zip(headers, row)) for row in rows]
+        headers = self.shot_logs_data['resultSets'][0]['headers']
+        headers = ["PLAYER_ID"] + headers
+        rows = self.shot_logs_data['resultSets'][0]['rowSet']
+        return [dict(zip(headers, [self.player_id] + row)) for row in rows]
