@@ -1126,5 +1126,59 @@ class Db:
         );'
         cursor.execute(player_tracking_rebound_logs_query)
 
+        player_tracking_passes_made_query = 'CREATE TABLE IF NOT EXISTS player_tracking_passes_made\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME_LAST_FIRST VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        PASS_TYPE VARCHAR(255),\
+        G INT,\
+        PASS_TO VARCHAR(255),\
+        PASS_TEAMMATE_PLAYER_ID VARCHAR(255),\
+        FREQUENCY DOUBLE,\
+        PASS VARCHAR(255),\
+        AST VARCHAR(255),\
+        FGM INT,\
+        FGA INT,\
+        FG_PCT DOUBLE,\
+        FG2M INT,\
+        FG2A INT,\
+        FG2_PCT DOUBLE,\
+        FG3M INT,\
+        FG3A INT,\
+        FG3_PCT DOUBLE,\
+        `DATE` DATE,\
+        PRIMARY KEY(PLAYER_ID, PASS_TEAMMATE_PLAYER_ID, TEAM_ID, `DATE`)\
+        );'
+        cursor.execute(player_tracking_passes_made_query)
+
+        player_tracking_passes_received_query = 'CREATE TABLE IF NOT EXISTS player_tracking_passes_received\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME_LAST_FIRST VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        PASS_TYPE VARCHAR(255),\
+        G INT,\
+        PASS_FROM VARCHAR(255),\
+        PASS_TEAMMATE_PLAYER_ID VARCHAR(255),\
+        FREQUENCY DOUBLE,\
+        PASS VARCHAR(255),\
+        AST VARCHAR(255),\
+        FGM INT,\
+        FGA INT,\
+        FG_PCT DOUBLE,\
+        FG2M INT,\
+        FG2A INT,\
+        FG2_PCT DOUBLE,\
+        FG3M INT,\
+        FG3A INT,\
+        FG3_PCT DOUBLE,\
+        `DATE` DATE,\
+        PRIMARY KEY(PLAYER_ID, PASS_TEAMMATE_PLAYER_ID, TEAM_ID, `DATE`)\
+        );'
+        cursor.execute(player_tracking_passes_received_query)
+
         conn.commit()
         conn.close()
