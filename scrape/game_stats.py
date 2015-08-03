@@ -5,8 +5,7 @@ class GameData:
     def __init__(self, game_id):
         self.game_id = game_id
 
-        self.pbp_url = "http://stats.nba.com/stats/playbyplayv2?EndPeriod=10&EndRange=55800&GameID=" + game_id + "&RangeType=2&Season=2014-15&SeasonType=Regular+Season&StartPeriod=1&StartRange=0"
-        self.pbp_response = urllib2.urlopen(self.pbp_url)
+        self.pbp_url = "http://stats.nba.com/stats/playbyplayv2?GameId="+game_id+"&StartPeriod=0&EndPeriod=10&RangeType=2&StartRange=0&EndRange=55800"
         self.pbp_data = json.loads(self.pbp_response.read())
 
         self.player_tracking_boxscore_url = "http://stats.nba.com/stats/boxscoreplayertrackv2?GameId="+game_id
