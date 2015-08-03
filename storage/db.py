@@ -1100,5 +1100,31 @@ class Db:
         );'
         cursor.execute(player_tracking_shot_logs_query)
 
+        player_tracking_rebound_logs_query = 'CREATE TABLE IF NOT EXISTS player_tracking_rebound_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        MATCHUP VARCHAR(255),\
+        LOCATION VARCHAR(255),\
+        W VARCHAR(255),\
+        FINAL_MARGIN INT,\
+        REB_NUMBER INT,\
+        PERIOD INT,\
+        GAME_CLOCK VARCHAR(255),\
+        REB_TYPE VARCHAR(255),\
+        CONTESTED VARCHAR(255),\
+        NUM_CONTESTED INT,\
+        REB_DIST DOUBLE,\
+        SHOOTER VARCHAR(255),\
+        SHOOTER_PLAYER_ID VARCHAR(255),\
+        SHOT_DIST DOUBLE,\
+        SHOT_TYPE VARCHAR(255),\
+        OREB BOOLEAN,\
+        DREB BOOLEAN,\
+        REB BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, GAME_ID, REB_NUMBER)\
+        );'
+        cursor.execute(player_tracking_rebound_logs_query)
+
         conn.commit()
         conn.close()
