@@ -967,7 +967,7 @@ class Db:
 
         transition_team_query = 'CREATE TABLE IF NOT EXISTS synergy_transition_team_offense\
         (\
-        TeamIDSID VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
         TeamName VARCHAR(255),\
         TeamNameAbbreviation VARCHAR(255),\
         TeamShortName VARCHAR(255),\
@@ -994,7 +994,7 @@ class Db:
         PlusOne DOUBLE,\
         Score DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(TeamIDSID, `DATE`)\
+        PRIMARY KEY(TEAM_ID, `DATE`)\
         );'
         cursor.execute(transition_team_query)
         cursor.execute('CREATE TABLE IF NOT EXISTS synergy_transition_team_defense LIKE synergy_transition_team_offense')
@@ -1021,12 +1021,12 @@ class Db:
 
         transition_query = 'CREATE TABLE IF NOT EXISTS synergy_transition_offense\
         (\
-        PlayerIDSID VARCHAR(255),\
+        PLAYER_ID VARCHAR(255),\
         PlayerFirstName VARCHAR(255),\
         PlayerLastName VARCHAR(255),\
         PlayerNumber VARCHAR(255),\
         P VARCHAR(255),\
-        TeamIDSID VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
         TeamName VARCHAR(255),\
         TeamNameAbbreviation VARCHAR(255),\
         TeamShortName VARCHAR(255),\
@@ -1053,7 +1053,7 @@ class Db:
         PlusOne DOUBLE,\
         Score DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(PlayerIDSID, TeamIDSID, `DATE`)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`)\
         );'
         cursor.execute(transition_query)
         cursor.execute('CREATE TABLE IF NOT EXISTS synergy_isolation_offense LIKE synergy_transition_offense')
