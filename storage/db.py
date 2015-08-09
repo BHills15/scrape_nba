@@ -1180,5 +1180,92 @@ class Db:
         );'
         cursor.execute(player_tracking_passes_received_query)
 
+        game_info_query = 'CREATE TABLE IF NOT EXISTS game_info\
+        (\
+        GAME_DATE VARCHAR(255),\
+        ATTENDANCE INT,\
+        GAME_TIME VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        PRIMARY KEY(GAME_ID)\
+        );'
+        cursor.execute(game_info_query)
+
+        game_summary_query = 'CREATE TABLE IF NOT EXISTS game_summary\
+        (\
+        GAME_DATE_EST VARCHAR(255),\
+        GAME_SEQUENCE INT,\
+        GAME_ID VARCHAR(255),\
+        GAME_STATUS_ID VARCHAR(255),\
+        GAME_STATUS_TEXT VARCHAR(255),\
+        GAMECODE VARCHAR(255),\
+        HOME_TEAM_ID VARCHAR(255),\
+        VISITOR_TEAM_ID VARCHAR(255),\
+        SEASON VARCHAR(255),\
+        LIVE_PERIOD INT,\
+        LIVE_PC_TIME VARCHAR(255),\
+        NATL_TV_BROADCASTER_ABBREVIATION VARCHAR(255),\
+        LIVE_PERIOD_TIME_BCAST VARCHAR(255),\
+        WH_STATUS VARCHAR(255),\
+        PRIMARY KEY(GAME_ID)\
+        );'
+        cursor.execute(game_summary_query)
+
+        officials_query = 'CREATE TABLE IF NOT EXISTS officials\
+        (\
+        OFFICIAL_ID VARCHAR(255),\
+        FIRST_NAME VARCHAR(255),\
+        LAST_NAME VARCHAR(255),\
+        JERSEY INT,\
+        GAME_ID VARCHAR(255),\
+        PRIMARY KEY(GAME_ID, OFFICIAL_ID)\
+        );'
+        cursor.execute(officials_query)
+
+        other_stats_query = 'CREATE TABLE IF NOT EXISTS other_stats\
+        (\
+        LEAGUE_ID VARCHAR(255),\
+        SEASON_ID VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        PTS_PAINT INT,\
+        PTS_2ND_CHANCE INT,\
+        PTS_FB INT,\
+        LARGEST_LEAD INT,\
+        LEAD_CHANGES INT,\
+        TIMES_TIED INT,\
+        GAME_ID VARCHAR(255),\
+        PRIMARY KEY(GAME_ID, TEAM_ID)\
+        );'
+        cursor.execute(other_stats_query)
+
+        line_score_query = 'CREATE TABLE IF NOT EXISTS line_score\
+        (\
+        GAME_DATE_EST VARCHAR(255),\
+        GAME_SEQUENCE INT,\
+        GAME_ID VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        TEAM_CITY_NAME VARCHAR(255),\
+        TEAM_WINS_LOSSES VARCHAR(255),\
+        PTS_QTR1 INT,\
+        PTS_QTR2 INT,\
+        PTS_QTR3 INT,\
+        PTS_QTR4 INT,\
+        PTS_OT1 INT,\
+        PTS_OT2 INT,\
+        PTS_OT3 INT,\
+        PTS_OT4 INT,\
+        PTS_OT5 INT,\
+        PTS_OT6 INT,\
+        PTS_OT7 INT,\
+        PTS_OT8 INT,\
+        PTS_OT9 INT,\
+        PTS_OT10 INT,\
+        PTS INT,\
+        PRIMARY KEY(GAME_ID, TEAM_ID)\
+        );'
+        cursor.execute(line_score_query)
+
         conn.commit()
         conn.close()
