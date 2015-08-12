@@ -68,7 +68,7 @@ class GameData:
         return game_shots
 
     def game_info(self):
-        return helper.get_data_from_url(self.summary_url, 4)
+        return helper.get_data_from_url_add_game_id(self.summary_url, self.game_id, 4)
 
     def game_summary(self):
         return helper.get_data_from_url(self.summary_url, 0)
@@ -77,7 +77,7 @@ class GameData:
         return helper.get_data_from_url(self.summary_url, 5)
 
     def officials(self):
-        return helper.get_data_from_url(self.summary_url, 2)
+        return helper.get_data_from_url_add_game_id(self.summary_url,self.game_id, 2)
 
     def other_stats(self):
-        return helper.get_data_from_url(self.summary_url, 1)
+        return helper.get_data_from_url_add_game_id(self.summary_url, self.game_id, 1)

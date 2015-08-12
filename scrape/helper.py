@@ -16,6 +16,14 @@ def get_data_from_url_add_player_id(url, player_id, index):
     rows = data['resultSets'][index]['rowSet']
     return [dict(zip(headers, [player_id] + row)) for row in rows]
 
+def get_data_from_url_add_game_id(url, game_id, index):
+    response = urllib2.urlopen(url)
+    data = json.loads(response.read())
+    headers = data['resultSets'][index]['headers']
+    headers = ["GAME_ID"] + headers
+    rows = data['resultSets'][index]['rowSet']
+    return [dict(zip(headers, [game_id] + row)) for row in rows]
+
 def get_data_from_url_rename_columns(url, renamed_columns, index):
     response = urllib2.urlopen(url)
     data = json.loads(response.read())
