@@ -15,6 +15,7 @@ class GameData:
         self.misc_boxscore_url = "http://stats.nba.com/stats/boxscoremiscv2?GameId="+game_id+"&StartPeriod=0&EndPeriod=10&RangeType=2&StartRange=0&EndRange=55800"
         self.usage_boxscore_url = "http://stats.nba.com/stats/boxscoreusagev2?GameId="+game_id+"&StartPeriod=0&EndPeriod=10&RangeType=2&StartRange=0&EndRange=55800"
         self.four_factors_boxscore_url = "http://stats.nba.com/stats/boxscorefourfactorsv2?GameId="+game_id+"&StartPeriod=0&EndPeriod=10&RangeType=2&StartRange=0&EndRange=55800"
+        self.summary_url = "http://stats.nba.com/stats/boxscoresummaryv2?GameId="+game_id
         self.teams = [self.player_tracking_boxscore_team()[0]['TEAM_ID'], self.player_tracking_boxscore_team()[1]['TEAM_ID']]
 
     def pbp(self):
@@ -65,3 +66,18 @@ class GameData:
             shots_url = "http://stats.nba.com/stats/shotchartdetail?Season=2014-15&SeasonType=Regular+Season&LeagueID=00&TeamID="+str(team)+"&PlayerID=0&GameID="+self.game_id+"&Outcome=&Location=&Month=0&SeasonSegment=&DateFrom=&DateTo=&OpponentTeamID=0&VsConference=&VsDivision=&Position=&RookieYear=&GameSegment=&Period=0&LastNGames=0&ContextFilter=&ContextMeasure=FG_PCT&display-mode=performance&zone-mode=zone&zoneOverlays=false&zoneDetails=false&viewShots=true"
             game_shots += helper.get_data_from_url(shots_url, 0)
         return game_shots
+
+    def game_info(self):
+        return helper.get_data_from_url(self.summary_url, 4)
+
+    def game_summary(self):
+        return helper.get_data_from_url(self.summary_url, 0)
+
+    def line_score(self):
+        return helper.get_data_from_url(self.summary_url, 5)
+
+    def officials(self):
+        return helper.get_data_from_url(self.summary_url, 2)
+
+    def other_stats(self):
+        return helper.get_data_from_url(self.summary_url, 1)
