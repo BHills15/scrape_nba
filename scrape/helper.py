@@ -33,4 +33,4 @@ def get_game_ids_for_date(date):
     games = get_data_from_url(url, 1)
     for game in games:
         game_ids.append(game['GAME_ID'])
-    return game_ids
+    return list(set(game_ids))
