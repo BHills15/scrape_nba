@@ -24,9 +24,10 @@ class Storage:
                 %s
             """ % (table_name, ','.join(headers), ','.join(quoted_values),','.join(duplicate_key_clauses)))
 
-    def insert_with_date(self, data, table_name):
+    def insert_with_date_and_season_type(self, data, table_name, is_regular_season):
         for line in data:
             line['DATE'] = time.strftime("%Y-%m-%d")
+            line['IS_REGULAR_SEASON'] = is_regular_season
             headers = [key for key,val in sorted(line.items())]
             quoted_values = ['"%s"' % (val) for key,val in sorted(line.items())]
             duplicate_key_clauses = ['`%s`="%s"' % (key,val) for key,val in sorted(line.items())]
@@ -87,21 +88,21 @@ class Db:
         SCORE VARCHAR(255),\
         SCOREMARGIN VARCHAR(255),\
         PERSON1TYPE VARCHAR(255),\
-        PLAYER1_ID INT,\
+        PLAYER1_ID VARCHAR(255),\
         PLAYER1_NAME VARCHAR(255),\
         PLAYER1_TEAM_ID VARCHAR(255),\
         PLAYER1_TEAM_CITY VARCHAR(255),\
         PLAYER1_TEAM_NICKNAME VARCHAR(255),\
         PLAYER1_TEAM_ABBREVIATION VARCHAR(255),\
         PERSON2TYPE VARCHAR(255),\
-        PLAYER2_ID INT,\
+        PLAYER2_ID VARCHAR(255),\
         PLAYER2_NAME VARCHAR(255),\
         PLAYER2_TEAM_ID VARCHAR(255),\
         PLAYER2_TEAM_CITY VARCHAR(255),\
         PLAYER2_TEAM_NICKNAME VARCHAR(255),\
         PLAYER2_TEAM_ABBREVIATION VARCHAR(255),\
         PERSON3TYPE VARCHAR(255),\
-        PLAYER3_ID INT,\
+        PLAYER3_ID VARCHAR(255),\
         PLAYER3_NAME VARCHAR(255),\
         PLAYER3_TEAM_ID VARCHAR(255),\
         PLAYER3_TEAM_CITY VARCHAR(255),\
@@ -540,7 +541,8 @@ class Db:
         EFG_PCT DOUBLE,\
         PTS_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(catch_shoot_sportvu_query)
 
@@ -563,7 +565,8 @@ class Db:
         EFG_PCT DOUBLE,\
         PTS_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(catch_shoot_sportvu_team_query)
 
@@ -583,7 +586,8 @@ class Db:
         FGP_DEFEND_RIM DOUBLE,\
         BLK_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(defense_sportvu_query)
 
@@ -603,7 +607,8 @@ class Db:
         FGP_DEFEND_RIM DOUBLE,\
         BLK_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(defense_sportvu_team_query)
 
@@ -624,7 +629,8 @@ class Db:
         DPP_TOT INT,\
         DVS_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(drives_sportvu_query)
 
@@ -645,7 +651,8 @@ class Db:
         DPP_TOT INT,\
         DVS_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(drives_sportvu_team_query)
 
@@ -667,7 +674,8 @@ class Db:
         PTS_CRT_48 DOUBLE,\
         AST_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(passing_sportvu_query)
 
@@ -689,7 +697,8 @@ class Db:
         PTS_CRT_48 DOUBLE,\
         AST_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(passing_sportvu_team_query)
 
@@ -712,7 +721,8 @@ class Db:
         EFG_PCT DOUBLE,\
         PTS_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(pull_up_shoot_sportvu_query)
 
@@ -735,7 +745,8 @@ class Db:
         EFG_PCT DOUBLE,\
         PTS_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(pull_up_shoot_sportvu_team_query)
 
@@ -768,7 +779,8 @@ class Db:
         DREB_UNCONTESTED DOUBLE,\
         DREB_UNCONTESTED_PCT DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(rebounding_sportvu_query)
 
@@ -801,7 +813,8 @@ class Db:
         DREB_UNCONTESTED DOUBLE,\
         DREB_UNCONTESTED_PCT DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(rebounding_sportvu_team_query)
 
@@ -841,7 +854,8 @@ class Db:
         UFG3A DOUBLE,\
         UFG3P DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(shooting_sportvu_query)
 
@@ -881,7 +895,8 @@ class Db:
         UFG3A DOUBLE,\
         UFG3P DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(shooting_sportvu_team_query)
 
@@ -903,7 +918,8 @@ class Db:
         AV_SPD_OFF DOUBLE,\
         AV_SPD_DEF DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(speed_sportvu_query)
 
@@ -925,7 +941,8 @@ class Db:
         AV_SPD_OFF DOUBLE,\
         AV_SPD_DEF DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(speed_sportvu_team_query)
 
@@ -948,7 +965,8 @@ class Db:
         PTS_HCCT DOUBLE,\
         TCH_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(touches_sportvu_query)
 
@@ -971,7 +989,8 @@ class Db:
         PTS_HCCT DOUBLE,\
         TCH_TOT INT,\
         `DATE` DATE,\
-        PRIMARY KEY(TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(touches_sportvu_team_query)
 
@@ -1004,7 +1023,8 @@ class Db:
         PlusOne DOUBLE,\
         Score DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(transition_team_query)
         cursor.execute('CREATE TABLE IF NOT EXISTS synergy_transition_team_defense LIKE synergy_transition_team_offense')
@@ -1063,7 +1083,8 @@ class Db:
         PlusOne DOUBLE,\
         Score DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(transition_query)
         cursor.execute('CREATE TABLE IF NOT EXISTS synergy_isolation_offense LIKE synergy_transition_offense')
@@ -1087,6 +1108,7 @@ class Db:
         player_tracking_shot_logs_query = 'CREATE TABLE IF NOT EXISTS player_tracking_shot_logs\
         (\
         PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
         GAME_ID VARCHAR(255),\
         MATCHUP VARCHAR(255),\
         LOCATION VARCHAR(255),\
@@ -1113,6 +1135,7 @@ class Db:
         player_tracking_rebound_logs_query = 'CREATE TABLE IF NOT EXISTS player_tracking_rebound_logs\
         (\
         PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
         GAME_ID VARCHAR(255),\
         MATCHUP VARCHAR(255),\
         LOCATION VARCHAR(255),\
@@ -1159,7 +1182,8 @@ class Db:
         FG3A INT,\
         FG3_PCT DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, PASS_TEAMMATE_PLAYER_ID, TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, PASS_TEAMMATE_PLAYER_ID, TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(player_tracking_passes_made_query)
 
@@ -1186,7 +1210,8 @@ class Db:
         FG3A INT,\
         FG3_PCT DOUBLE,\
         `DATE` DATE,\
-        PRIMARY KEY(PLAYER_ID, PASS_TEAMMATE_PLAYER_ID, TEAM_ID, `DATE`)\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, PASS_TEAMMATE_PLAYER_ID, TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(player_tracking_passes_received_query)
 
@@ -1277,6 +1302,21 @@ class Db:
         PRIMARY KEY(GAME_ID, TEAM_ID)\
         );'
         cursor.execute(line_score_query)
+
+        inactives_query = 'CREATE TABLE IF NOT EXISTS inactives\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        FIRST_NAME VARCHAR(255),\
+        LAST_NAME VARCHAR(255),\
+        JERSEY_NUM VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_CITY VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        PRIMARY KEY(GAME_ID, PLAYER_ID)\
+        );'
+        cursor.execute(inactives_query)
 
         conn.commit()
         conn.close()

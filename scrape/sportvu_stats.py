@@ -4,25 +4,26 @@ import urllib2
 import helper
 
 class SportVuData:
-    def __init__(self):
-        self.touches_team_url = "http://stats.nba.com/js/data/sportvu/2014/touchesTeamData.json"
-        self.defense_team_url = "http://stats.nba.com/js/data/sportvu/2014/defenseTeamData.json"
-        self.drives_team_url = "http://stats.nba.com/js/data/sportvu/2014/drivesTeamData.json"
-        self.passing_team_url = "http://stats.nba.com/js/data/sportvu/2014/passingTeamData.json"
-        self.pull_up_shoot_team_url = "http://stats.nba.com/js/data/sportvu/2014/pullUpShootTeamData.json"
-        self.rebounding_team_url = "http://stats.nba.com/js/data/sportvu/2014/reboundingTeamData.json"
-        self.shooting_team_url = "http://stats.nba.com/js/data/sportvu/2014/shootingTeamData.json"
-        self.speed_team_url = "http://stats.nba.com/js/data/sportvu/2014/speedTeamData.json"
-        self.catch_shoot_team_url = "http://stats.nba.com/js/data/sportvu/2014/catchShootTeamData.json"
-        self.touches_url = "http://stats.nba.com/js/data/sportvu/2014/touchesData.json"
-        self.defense_url = "http://stats.nba.com/js/data/sportvu/2014/defenseData.json"
-        self.drives_url = "http://stats.nba.com/js/data/sportvu/2014/drivesData.json"
-        self.passing_url = "http://stats.nba.com/js/data/sportvu/2014/passingData.json"
-        self.pull_up_shoot_url = "http://stats.nba.com/js/data/sportvu/2014/pullUpShootData.json"
-        self.rebounding_url = "http://stats.nba.com/js/data/sportvu/2014/reboundingData.json"
-        self.shooting_url = "http://stats.nba.com/js/data/sportvu/2014/shootingData.json"
-        self.speed_url = "http://stats.nba.com/js/data/sportvu/2014/speedData.json"
-        self.catch_shoot_url = "http://stats.nba.com/js/data/sportvu/2014/catchShootData.json"
+    def __init__(self, season, season_type=""):
+        # season type = "" for regular season, "Post" for playoffs
+        self.touches_team_url = "http://stats.nba.com/js/data/sportvu/"+season+"/touchesTeamData"+season_type+".json"
+        self.defense_team_url = "http://stats.nba.com/js/data/sportvu/"+season+"/defenseTeamData"+season_type+".json"
+        self.drives_team_url = "http://stats.nba.com/js/data/sportvu/"+season+"/drivesTeamData"+season_type+".json"
+        self.passing_team_url = "http://stats.nba.com/js/data/sportvu/"+season+"/passingTeamData"+season_type+".json"
+        self.pull_up_shoot_team_url = "http://stats.nba.com/js/data/sportvu/"+season+"/pullUpShootTeamData"+season_type+".json"
+        self.rebounding_team_url = "http://stats.nba.com/js/data/sportvu/"+season+"/reboundingTeamData"+season_type+".json"
+        self.shooting_team_url = "http://stats.nba.com/js/data/sportvu/"+season+"/shootingTeamData"+season_type+".json"
+        self.speed_team_url = "http://stats.nba.com/js/data/sportvu/"+season+"/speedTeamData"+season_type+".json"
+        self.catch_shoot_team_url = "http://stats.nba.com/js/data/sportvu/"+season+"/catchShootTeamData"+season_type+".json"
+        self.touches_url = "http://stats.nba.com/js/data/sportvu/"+season+"/touchesData"+season_type+".json"
+        self.defense_url = "http://stats.nba.com/js/data/sportvu/"+season+"/defenseData"+season_type+".json"
+        self.drives_url = "http://stats.nba.com/js/data/sportvu/"+season+"/drivesData"+season_type+".json"
+        self.passing_url = "http://stats.nba.com/js/data/sportvu/"+season+"/passingData"+season_type+".json"
+        self.pull_up_shoot_url = "http://stats.nba.com/js/data/sportvu/"+season+"/pullUpShootData"+season_type+".json"
+        self.rebounding_url = "http://stats.nba.com/js/data/sportvu/"+season+"/reboundingData"+season_type+".json"
+        self.shooting_url = "http://stats.nba.com/js/data/sportvu/"+season+"/shootingData"+season_type+".json"
+        self.speed_url = "http://stats.nba.com/js/data/sportvu/"+season+"/speedData"+season_type+".json"
+        self.catch_shoot_url = "http://stats.nba.com/js/data/sportvu/"+season+"/catchShootData"+season_type+".json"
 
     def touches_team(self):
         return helper.get_data_from_url(self.touches_team_url, 0)

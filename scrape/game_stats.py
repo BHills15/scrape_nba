@@ -81,3 +81,6 @@ class GameData:
 
     def other_stats(self):
         return helper.get_data_from_url_add_game_id(self.summary_url, self.game_id, 1)
+
+    def inactives(self):
+        return helper.get_data_from_url_add_game_id(self.summary_url, self.game_id, 3)

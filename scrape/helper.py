@@ -8,13 +8,13 @@ def get_data_from_url(url, index):
     rows = data['resultSets'][index]['rowSet']
     return [dict(zip(headers, row)) for row in rows]
 
-def get_data_from_url_add_player_id(url, player_id, index):
+def get_data_from_url_add_player_id(url, player_id, player_name, index):
     response = urllib2.urlopen(url)
     data = json.loads(response.read())
     headers = data['resultSets'][index]['headers']
-    headers = ["PLAYER_ID"] + headers
+    headers = ["PLAYER_ID", "PLAYER_NAME"] + headers
     rows = data['resultSets'][index]['rowSet']
-    return [dict(zip(headers, [player_id] + row)) for row in rows]
+    return [dict(zip(headers, [player_id, player_name] + row)) for row in rows]
 
 def get_data_from_url_add_game_id(url, game_id, index):
     response = urllib2.urlopen(url)
