@@ -4,6 +4,7 @@ import sys
 import datetime
 from dateutil.rrule import rrule, DAILY
 import logging
+import re
 
 from scrape import game_stats
 import storage.db
@@ -34,8 +35,14 @@ def main():
         sys.exit(0)
 
     logging.basicConfig(filename='games.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-    config=open('config.json').read()
-    db_config = json.loads(config)
+    config=json.loads(open('config.json').read())
+
+    season = config["season"]
+    # make sure season is valid format
+    season_pattern = re.compile('\d{4}[-]\d{2}$')
+    if season_pattern.match(season) == None:
+        print "Invalid Season format. Example format: 2014-15"
+        sys.exit(0)
 
     start_split = start.split("-")
     end_split = end.split("-")
@@ -43,14 +50,14 @@ def main():
     start_date = datetime.date(int(start_split[0]), int(start_split[1]), int(start_split[2]))
     end_date = datetime.date(int(end_split[0]), int(end_split[1]), int(end_split[2]))
 
-    db_storage = storage.db.Storage(db_config['host'], db_config['username'], db_config['password'], db_config['database'])
+    db_storage = storage.db.Storage(config['host'], config['username'], config['password'], config['database'])
 
     for dt in rrule(DAILY, dtstart=start_date, until=end_date):
         games = scrape.helper.get_game_ids_for_date(dt.strftime("%Y-%m-%d"))
         for game_id in games:
             if game_id[:3] == "002" or game_id[:3] == "004":
                 try:
-                    game_data = game_stats.GameData(game_id)
+                    game_data = game_stats.GameData(game_id, season)
                     db_storage.insert(game_data.pbp(), "pbp")
                     db_storage.insert(game_data.player_tracking_boxscore(), "player_tracking_boxscores")
                     db_storage.insert(game_data.player_tracking_boxscore_team(), "player_tracking_boxscores_team")
