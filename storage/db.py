@@ -1,5 +1,6 @@
 import MySQLdb
 import time
+import pandas.io.sql as sql
 
 class Storage:
     def __init__(self, host, user, pw, db):
@@ -44,11 +45,14 @@ class Storage:
     def close(self):
         return self.conn.close()
 
-    def query(self, sql):
+    def query(self, sql_query):
         curs = self.curs()
-        curs.execute(sql)
+        curs.execute(sql_query)
 
         return curs.fetchall()
+
+    def query_df(self, sql_query):
+        return sql.read_frame(sql_query, self.conn)
 
     def curs(self):
         return self.conn.cursor()
