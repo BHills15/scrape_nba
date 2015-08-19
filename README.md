@@ -41,3 +41,8 @@ python get_sportvu.py
 ```
 python get_synergy.py
 ```
+
+* Get players on floor for pbp in database
+```
+python get_players_on_floor.py
+```
