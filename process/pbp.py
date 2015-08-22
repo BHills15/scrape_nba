@@ -34,7 +34,7 @@ class Lineups:
         split = period['PCTIMESTRING'].str.split(":")
         period['seconds'] = split.map(lambda x: int(x[0])*60 + int(x[1]))
 
-        subs = period[period['EVENTMSGTYPE'] == 8].index.tolist()
+        subs = period[(period['EVENTMSGTYPE'] == 8) & (period['PCTIMESTRING'] != "12:00")].index.tolist()
 
         if period_number == 1:
             start = "0000"
@@ -80,7 +80,7 @@ class Lineups:
     def get_players_on_floor_for_period(self, period):
         # for a given period data frame, return a data frame with new columns for the players on the floor
         period = period.reset_index(drop=True)
-        game_id = period['GAME_ID'][0]
+        game_id = period['GAME_ID'].iloc[0]
         start_event_num = period['EVENTNUM'].min()
         period_number = period['PERIOD'].mean()
         first_sub = period[period['EVENTMSGTYPE'] == 8]['EVENTNUM'].min()
@@ -109,25 +109,25 @@ class Lineups:
         subs = period[period['EVENTMSGTYPE'] == 8].index.tolist()
         end = len(period.index)
         for i in range(len(subs)):
-            if str(period['HOME_PLAYER1'][subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
+            if str(period['HOME_PLAYER1'].iloc[subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
                 period.ix[subs[i]:end, 'HOME_PLAYER1'] = str(period['PLAYER2_ID'][subs[i]])
-            elif str(period['HOME_PLAYER2'][subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
+            elif str(period['HOME_PLAYER2'].iloc[subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
                 period.ix[subs[i]:end, 'HOME_PLAYER2'] = str(period['PLAYER2_ID'][subs[i]])
-            elif str(period['HOME_PLAYER3'][subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
+            elif str(period['HOME_PLAYER3'].iloc[subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
                 period.ix[subs[i]:end, 'HOME_PLAYER3'] = str(period['PLAYER2_ID'][subs[i]])
-            elif str(period['HOME_PLAYER4'][subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
+            elif str(period['HOME_PLAYER4'].iloc[subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
                 period.ix[subs[i]:end, 'HOME_PLAYER4'] = str(period['PLAYER2_ID'][subs[i]])
-            elif str(period['HOME_PLAYER5'][subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
+            elif str(period['HOME_PLAYER5'].iloc[subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
                 period.ix[subs[i]:end, 'HOME_PLAYER5'] = str(period['PLAYER2_ID'][subs[i]])
-            elif str(period['VISITOR_PLAYER1'][subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
+            elif str(period['VISITOR_PLAYER1'].iloc[subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
                 period.ix[subs[i]:end, 'VISITOR_PLAYER1'] = str(period['PLAYER2_ID'][subs[i]])
-            elif str(period['VISITOR_PLAYER2'][subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
+            elif str(period['VISITOR_PLAYER2'].iloc[subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
                 period.ix[subs[i]:end, 'VISITOR_PLAYER2'] = str(period['PLAYER2_ID'][subs[i]])
-            elif str(period['VISITOR_PLAYER3'][subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
+            elif str(period['VISITOR_PLAYER3'].iloc[subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
                 period.ix[subs[i]:end, 'VISITOR_PLAYER3'] = str(period['PLAYER2_ID'][subs[i]])
-            elif str(period['VISITOR_PLAYER4'][subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
+            elif str(period['VISITOR_PLAYER4'].iloc[subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
                 period.ix[subs[i]:end, 'VISITOR_PLAYER4'] = str(period['PLAYER2_ID'][subs[i]])
-            elif str(period['VISITOR_PLAYER5'][subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
+            elif str(period['VISITOR_PLAYER5'].iloc[subs[i]]) == str(period['PLAYER1_ID'][subs[i]]):
                 period.ix[subs[i]:end, 'VISITOR_PLAYER5'] = str(period['PLAYER2_ID'][subs[i]])
         return period
 
