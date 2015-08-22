@@ -39,21 +39,21 @@ class Lineups:
         if period_number == 1:
             start = "0000"
             if len(subs) > 0:
-                end = (720-period['seconds'][subs[0]])*10
+                end = (720-period['seconds'].iloc[subs[0]])*10
             else:
-                end = (720-period["seconds"][-1])*10
+                end = (720-period["seconds"].iloc[-1])*10
         elif period_number <= 4:
             start = int(7200*(period_number-1))
             if len(subs) > 0:
-                end = start + (720-period['seconds'][subs[0]])*10
+                end = start + (720-period['seconds'].iloc[subs[0]])*10
             else:
-                end = start + (720-period["seconds"][-1])*10
+                end = start + (720-period["seconds"].iloc[-1])*10
         else:
-            start = 28800 + 3000*(period_number-5)
+            start = int(28800 + 3000*(period_number-5))
             if len(subs) > 0:
-                end = start + (300-period['seconds'][subs[0]])*10
+                end = start + (300-period['seconds'].iloc[subs[0]])*10
             else:
-                end = start + (300-period["seconds"][-1])*10
+                end = start + (300-period["seconds"].iloc[-1])*10
 
         period.drop('seconds', axis=1, inplace=True)
         boxscore_link = self.boxscore_base_url.replace("<game_id>", game_id)
