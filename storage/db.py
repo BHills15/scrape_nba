@@ -1132,6 +1132,7 @@ class Db:
         CLOSE_DEF_DIST DOUBLE,\
         FGM BOOLEAN,\
         PTS INT,\
+        PBP_EVENTNUM INT,\
         PRIMARY KEY(PLAYER_ID, GAME_ID, SHOT_NUMBER)\
         );'
         cursor.execute(player_tracking_shot_logs_query)
@@ -1159,6 +1160,7 @@ class Db:
         OREB BOOLEAN,\
         DREB BOOLEAN,\
         REB BOOLEAN,\
+        PBP_EVENTNUM INT,\
         PRIMARY KEY(PLAYER_ID, GAME_ID, REB_NUMBER)\
         );'
         cursor.execute(player_tracking_rebound_logs_query)
