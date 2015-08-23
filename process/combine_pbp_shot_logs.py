@@ -6,7 +6,7 @@ class ShotLogsPbp:
         self.pbp_data = pbp_data
 
     def combine_pbp_and_shot_logs_for_player_for_period(self, player_id, period, game_id):
-        # return player_id, game_id, shot_number, eventnum
+        # return list of dicts containing player_id, game_id, shot_number, eventnum
         shot_log_event_num = []
         pbp_player_period = self.pbp_data[(self.pbp_data['PERIOD'] == period) & (self.pbp_data['PLAYER1_ID'] == player_id)]
         shot_logs_player_period = self.shot_log_data[(self.shot_log_data['PERIOD'] == period) & (self.shot_log_data['PLAYER_ID'] == player_id)]
