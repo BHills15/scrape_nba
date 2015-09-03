@@ -23,10 +23,9 @@ def main():
         players_and_periods = shot_log_data[['PERIOD', 'PLAYER_ID']]
         unique_players_and_periods = players_and_periods.drop_duplicates()
 
-        game_data = combine_pbp_shot_logs.ShotLogsPbp(shot_log_data, pbp_data)
         for _, row in unique_players_and_periods.iterrows():
             try:
-                shots = game_data.combine_pbp_and_shot_logs_for_player_for_period(row['PLAYER_ID'], row['PERIOD'], game_id)
+                shots = combine_pbp_shot_logs.combine_pbp_and_shot_logs_for_player_for_period(shot_log_data, pbp_data, row['PLAYER_ID'], row['PERIOD'], game_id)
                 db_storage.insert(shots, "player_tracking_shot_logs")
                 db_storage.commit()
             except:
