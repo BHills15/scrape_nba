@@ -38,9 +38,8 @@ def combine_pbp_and_rebound_logs_for_player_for_period(rebound_log_data, pbp_dat
     else:
         # when number of rebounds is different in both datasets, find rebounds within 5 seconds, if there is only 1, keep it
         for i, row in rebound_logs_player_period.iterrows():
-            #possible_matches = pbp_player_period[(pbp_player_period['seconds'] + 5 <= row['seconds']) & (pbp_player_period['seconds'] - 5 >= row['seconds'])]
             possible_matches = pbp_player_period[abs(row['seconds'] - pbp_player_period['seconds']) <= 5]
-            if len(possible_matches.index) == 1:
+            if len(possible_matches.index) == 1 and len(rebound_logs_player_period[abs(row['seconds'] - rebound_logs_player_period['seconds']) <= 5]) == 1:
                 rebound_log_event_num.append({"GAME_ID": game_id, "PLAYER_ID": player_id, "REB_NUMBER": row['REB_NUMBER'], "PBP_EVENTNUM": possible_matches['EVENTNUM'].iloc[0]})
 
     return rebound_log_event_num

@@ -39,7 +39,7 @@ def combine_pbp_and_shot_logs_for_player_for_period(shot_log_data, pbp_data, pla
         # when number of shots is different in both datasets, find shots within 5 seconds, if there is only 1, keep it
         for i, row in shot_logs_player_period.iterrows():
             possible_matches = pbp_player_period[abs(row['seconds'] - pbp_player_period['seconds']) <= 5]
-            if len(possible_matches.index) == 1:
+            if len(possible_matches.index) == 1 and len(shot_logs_player_period[abs(row['seconds'] - shot_logs_player_period['seconds']) <= 5]) == 1:
                 shot_log_event_num.append({"GAME_ID": game_id, "PLAYER_ID": player_id, "SHOT_NUMBER": row['SHOT_NUMBER'], "PBP_EVENTNUM": possible_matches['EVENTNUM'].iloc[0]})
 
     return shot_log_event_num
