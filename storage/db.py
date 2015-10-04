@@ -546,7 +546,7 @@ class Db:
         PTS_TOT INT,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(catch_shoot_sportvu_query)
 
@@ -591,7 +591,7 @@ class Db:
         BLK_TOT INT,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(defense_sportvu_query)
 
@@ -634,7 +634,7 @@ class Db:
         DVS_TOT INT,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(drives_sportvu_query)
 
@@ -679,7 +679,7 @@ class Db:
         AST_TOT INT,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(passing_sportvu_query)
 
@@ -726,7 +726,7 @@ class Db:
         PTS_TOT INT,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(pull_up_shoot_sportvu_query)
 
@@ -784,7 +784,7 @@ class Db:
         DREB_UNCONTESTED_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(rebounding_sportvu_query)
 
@@ -859,7 +859,7 @@ class Db:
         UFG3P DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(shooting_sportvu_query)
 
@@ -923,7 +923,7 @@ class Db:
         AV_SPD_DEF DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(speed_sportvu_query)
 
@@ -970,7 +970,7 @@ class Db:
         TCH_TOT INT,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, `DATE`, IS_REGULAR_SEASON)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, IS_REGULAR_SEASON)\
         );'
         cursor.execute(touches_sportvu_query)
 
