@@ -20,43 +20,50 @@ def main():
     year = season.split("-")[0]
 
     if is_regular_season == 0:
-        season_type = "Post"
+        season_type = "Playoffs"
     elif is_regular_season == 1:
-        season_type = ""
+        season_type = "Regular+Season"
     else:
         print "Invalid is_regular_season value. Use 0 for regular season, 1 for playoffs"
 
     db_storage = storage.db.Storage(config['host'], config['username'], config['password'], config['database'])
 
     try:
-        sportvu_data = sportvu_stats.SportVuData(year, season_type)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "CatchShoot"), "sportvu_catch_shoot", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "CatchShoot"), "sportvu_catch_shoot_team", is_regular_season)
 
-        db_storage.insert_with_date_and_season_type(sportvu_data.touches(), "sportvu_touches", is_regular_season)
-        db_storage.insert_with_date_and_season_type(sportvu_data.touches_team(), "sportvu_touches_team", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "Defense"), "sportvu_defense", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "Defense"), "sportvu_defense_team", is_regular_season)
 
-        db_storage.insert_with_date_and_season_type(sportvu_data.speed(), "sportvu_speed", is_regular_season)
-        db_storage.insert_with_date_and_season_type(sportvu_data.speed_team(), "sportvu_speed_team", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "Drives"), "sportvu_drives", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "Drives"), "sportvu_drives_team", is_regular_season)
 
-        db_storage.insert_with_date_and_season_type(sportvu_data.shooting(), "sportvu_shooting", is_regular_season)
-        db_storage.insert_with_date_and_season_type(sportvu_data.shooting_team(), "sportvu_shooting_team", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "Passing"), "sportvu_passing", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "Passing"), "sportvu_passing_team", is_regular_season)
 
-        db_storage.insert_with_date_and_season_type(sportvu_data.rebounding(), "sportvu_rebounding", is_regular_season)
-        db_storage.insert_with_date_and_season_type(sportvu_data.rebounding_team(), "sportvu_rebounding_team", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "PullUpShot"), "sportvu_pull_up_shoot", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "PullUpShot"), "sportvu_pull_up_shoot_team", is_regular_season)
 
-        db_storage.insert_with_date_and_season_type(sportvu_data.pull_up_shoot(), "sportvu_pull_up_shoot", is_regular_season)
-        db_storage.insert_with_date_and_season_type(sportvu_data.pull_up_shoot_team(), "sportvu_pull_up_shoot_team", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "Rebounding"), "sportvu_rebounding", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "Rebounding"), "sportvu_rebounding_team", is_regular_season)
 
-        db_storage.insert_with_date_and_season_type(sportvu_data.passing(), "sportvu_passing", is_regular_season)
-        db_storage.insert_with_date_and_season_type(sportvu_data.passing_team(), "sportvu_passing_team", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "Efficiency"), "sportvu_shooting", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "Efficiency"), "sportvu_shooting_team", is_regular_season)
 
-        db_storage.insert_with_date_and_season_type(sportvu_data.drives(), "sportvu_drives", is_regular_season)
-        db_storage.insert_with_date_and_season_type(sportvu_data.drives_team(), "sportvu_drives_team", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "SpeedDistance"), "sportvu_speed", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "SpeedDistance"), "sportvu_speed_team", is_regular_season)
 
-        db_storage.insert_with_date_and_season_type(sportvu_data.defense(), "sportvu_defense", is_regular_season)
-        db_storage.insert_with_date_and_season_type(sportvu_data.defense_team(), "sportvu_defense_team", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "ElbowTouch"), "sportvu_elbow_touches", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "ElbowTouch"), "sportvu_elbow_touches_team", is_regular_season)
 
-        db_storage.insert_with_date_and_season_type(sportvu_data.catch_shoot(), "sportvu_catch_shoot", is_regular_season)
-        db_storage.insert_with_date_and_season_type(sportvu_data.catch_shoot_team(), "sportvu_catch_shoot_team", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "PostTouch"), "sportvu_post_touches", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "PostTouch"), "sportvu_post_touches_team", is_regular_season)
+
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "PaintTouch"), "sportvu_paint_touches", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "PaintTouch"), "sportvu_paint_touches_team", is_regular_season)
+
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "Possessions"), "sportvu_possessions", is_regular_season)
+        db_storage.insert_with_date_and_season_type(sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "Possessions"), "sportvu_possessions_team", is_regular_season)
 
         db_storage.commit()
     except:
