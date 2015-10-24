@@ -98,52 +98,52 @@ def main():
             drives_player = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "Drives", start_date=date, end_date=date)
             db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_player(drives_player, date_to_store, db_storage, game_player_map), "sportvu_drives_game_logs", is_regular_season, date=date_to_store)
             drives_team = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "Drives", start_date=date, end_date=date)
-            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(drives_team, date_to_store, db_storage, game_player_map), "sportvu_drives_team_game_logs", is_regular_season, date=date_to_store)
+            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(drives_team, date_to_store, db_storage, game_team_map), "sportvu_drives_team_game_logs", is_regular_season, date=date_to_store)
 
             passing_player = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "Passing", start_date=date, end_date=date)
             db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_player(passing_player, date_to_store, db_storage, game_player_map), "sportvu_passing_game_logs", is_regular_season, date=date_to_store)
             passing_team = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "Passing", start_date=date, end_date=date)
-            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(passing_team, date_to_store, db_storage, game_player_map), "sportvu_passing_team_game_logs", is_regular_season, date=date_to_store)
+            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(passing_team, date_to_store, db_storage, game_team_map), "sportvu_passing_team_game_logs", is_regular_season, date=date_to_store)
 
             pull_up_shoot_player = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "PullUpShot", start_date=date, end_date=date)
             db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_player(pull_up_shoot_player, date_to_store, db_storage, game_player_map), "sportvu_pull_up_shoot_game_logs", is_regular_season, date=date_to_store)
             pull_up_shoot_team = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "PullUpShot", start_date=date, end_date=date)
-            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(pull_up_shoot_team, date_to_store, db_storage, game_player_map), "sportvu_pull_up_shoot_team_game_logs", is_regular_season, date=date_to_store)
+            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(pull_up_shoot_team, date_to_store, db_storage, game_team_map), "sportvu_pull_up_shoot_team_game_logs", is_regular_season, date=date_to_store)
 
             rebounding_player = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "Rebounding", start_date=date, end_date=date)
             db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_player(rebounding_player, date_to_store, db_storage, game_player_map), "sportvu_rebounding_game_logs", is_regular_season, date=date_to_store)
             rebounding_team = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "Rebounding", start_date=date, end_date=date)
-            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(rebounding_team, date_to_store, db_storage, game_player_map), "sportvu_rebounding_team_game_logs", is_regular_season, date=date_to_store)
+            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(rebounding_team, date_to_store, db_storage, game_team_map), "sportvu_rebounding_team_game_logs", is_regular_season, date=date_to_store)
 
             shooting_player = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "Efficiency", start_date=date, end_date=date)
             db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_player(shooting_player, date_to_store, db_storage, game_player_map), "sportvu_shooting_game_logs", is_regular_season, date=date_to_store)
             shooting_team = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "Efficiency", start_date=date, end_date=date)
-            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(shooting_team, date_to_store, db_storage, game_player_map), "sportvu_shooting_team_game_logs", is_regular_season, date=date_to_store)
+            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(shooting_team, date_to_store, db_storage, game_team_map), "sportvu_shooting_team_game_logs", is_regular_season, date=date_to_store)
 
             speed_player = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "SpeedDistance", start_date=date, end_date=date)
             db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_player(speed_player, date_to_store, db_storage, game_player_map), "sportvu_speed_game_logs", is_regular_season, date=date_to_store)
             speed_team = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "SpeedDistance", start_date=date, end_date=date)
-            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(speed_team, date_to_store, db_storage, game_player_map), "sportvu_speed_team_game_logs", is_regular_season, date=date_to_store)
+            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(speed_team, date_to_store, db_storage, game_team_map), "sportvu_speed_team_game_logs", is_regular_season, date=date_to_store)
 
             elbow_touches_player = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "ElbowTouch", start_date=date, end_date=date)
             db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_player(elbow_touches_player, date_to_store, db_storage, game_player_map), "sportvu_elbow_touches_game_logs", is_regular_season, date=date_to_store)
             elbow_touches_team = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "ElbowTouch", start_date=date, end_date=date)
-            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(elbow_touches_team, date_to_store, db_storage, game_player_map), "sportvu_elbow_touches_team_game_logs", is_regular_season, date=date_to_store)
+            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(elbow_touches_team, date_to_store, db_storage, game_team_map), "sportvu_elbow_touches_team_game_logs", is_regular_season, date=date_to_store)
 
             post_touches_player = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "PostTouch", start_date=date, end_date=date)
             db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_player(post_touches_player, date_to_store, db_storage, game_player_map), "sportvu_post_touches_game_logs", is_regular_season, date=date_to_store)
             post_touches_team = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "PostTouch", start_date=date, end_date=date)
-            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(post_touches_team, date_to_store, db_storage, game_player_map), "sportvu_post_touches_team_game_logs", is_regular_season, date=date_to_store)
+            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(post_touches_team, date_to_store, db_storage, game_team_map), "sportvu_post_touches_team_game_logs", is_regular_season, date=date_to_store)
 
             paint_touches_player = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "PaintTouch", start_date=date, end_date=date)
             db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_player(paint_touches_player, date_to_store, db_storage, game_player_map), "sportvu_paint_touches_game_logs", is_regular_season, date=date_to_store)
             paint_touches_team = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "PaintTouch", start_date=date, end_date=date)
-            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(paint_touches_team, date_to_store, db_storage, game_player_map), "sportvu_paint_touches_team_game_logs", is_regular_season, date=date_to_store)
+            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(paint_touches_team, date_to_store, db_storage, game_team_map), "sportvu_paint_touches_team_game_logs", is_regular_season, date=date_to_store)
 
             possessions_player = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "Possessions", start_date=date, end_date=date)
             db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_player(possessions_player, date_to_store, db_storage, game_player_map), "sportvu_possessions_game_logs", is_regular_season, date=date_to_store)
             possessions_team = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Team", "Possessions", start_date=date, end_date=date)
-            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(possessions_team, date_to_store, db_storage, game_player_map), "sportvu_possessions_team_game_logs", is_regular_season, date=date_to_store)
+            db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_team(possessions_team, date_to_store, db_storage, game_team_map), "sportvu_possessions_team_game_logs", is_regular_season, date=date_to_store)
 
             db_storage.commit()
         except:
