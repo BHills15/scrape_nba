@@ -61,12 +61,12 @@ def main():
     db_storage = storage.db.Storage(config['host'], config['username'], config['password'], config['database'])
 
     game_player_map = {}
-    player_boxscores = db_storage.query("select GAME_ID, PLAYER_ID from traditional_boxscores")
+    player_boxscores = db_storage.query("select GAME_ID, PLAYER_ID, TEAM_ID from traditional_boxscores")
     for player_line in player_boxscores:
         if player_line[1] in game_player_map.keys():
-            game_player_map[player_line[1]][player_line[0]] = None
+            game_player_map[player_line[1]][player_line[0]] = player_line[2]
         else:
-            game_player_map[player_line[1]] = {player_line[0]:None}
+            game_player_map[player_line[1]] = {player_line[0]:player_line[2]}
 
     game_team_map = {}
     team_boxscores = db_storage.query("select GAME_ID, TEAM_ID from traditional_boxscores_team")

@@ -16,6 +16,7 @@ def add_game_id_to_game_log_for_player(daily_data, date, storage, player_game_ma
             game_id = game[0]
             if game_id in player_game_map[player_id].keys():
                 row["GAME_ID"] = game_id
+                row["TEAM_ID"] = player_game_map[player_id][game_id]
                 to_return.append(row)
                 break
     return to_return
