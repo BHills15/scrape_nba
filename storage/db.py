@@ -25,9 +25,9 @@ class Storage:
                 %s
             """ % (table_name, ','.join(headers), ','.join(quoted_values),','.join(duplicate_key_clauses)))
 
-    def insert_with_date_and_season_type(self, data, table_name, is_regular_season):
+    def insert_with_date_and_season_type(self, data, table_name, is_regular_season, date=time.strftime("%Y-%m-%d")):
         for line in data:
-            line['DATE'] = time.strftime("%Y-%m-%d")
+            line['DATE'] = date
             line['IS_REGULAR_SEASON'] = is_regular_season
             headers = [key for key,val in sorted(line.items())]
             quoted_values = ['"%s"' % (val) for key,val in sorted(line.items())]
@@ -1235,6 +1235,742 @@ class Db:
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
         PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
+        );'
+        cursor.execute(possessions_sportvu_team_query)
+
+        catch_shoot_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_catch_shoot_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        CATCH_SHOOT_FGM DOUBLE,\
+        CATCH_SHOOT_FGA DOUBLE,\
+        CATCH_SHOOT_FG_PCT DOUBLE,\
+        CATCH_SHOOT_PTS DOUBLE,\
+        CATCH_SHOOT_FG3M DOUBLE,\
+        CATCH_SHOOT_FG3A DOUBLE,\
+        CATCH_SHOOT_FG3_PCT DOUBLE,\
+        CATCH_SHOOT_EFG_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(catch_shoot_sportvu_query)
+
+        catch_shoot_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_catch_shoot_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        CATCH_SHOOT_FGM DOUBLE,\
+        CATCH_SHOOT_FGA DOUBLE,\
+        CATCH_SHOOT_FG_PCT DOUBLE,\
+        CATCH_SHOOT_PTS DOUBLE,\
+        CATCH_SHOOT_FG3M DOUBLE,\
+        CATCH_SHOOT_FG3A DOUBLE,\
+        CATCH_SHOOT_FG3_PCT DOUBLE,\
+        CATCH_SHOOT_EFG_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(catch_shoot_sportvu_team_query)
+
+        defense_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_defense_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        STL DOUBLE,\
+        BLK DOUBLE,\
+        DREB DOUBLE,\
+        DEF_RIM_FGM DOUBLE,\
+        DEF_RIM_FGA DOUBLE,\
+        DEF_RIM_FG_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(defense_sportvu_query)
+
+        defense_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_defense_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        STL DOUBLE,\
+        BLK DOUBLE,\
+        DREB DOUBLE,\
+        DEF_RIM_FGM DOUBLE,\
+        DEF_RIM_FGA DOUBLE,\
+        DEF_RIM_FG_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(defense_sportvu_team_query)
+
+        drives_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_drives_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        DRIVES DOUBLE,\
+        DRIVE_FGM DOUBLE,\
+        DRIVE_FGA DOUBLE,\
+        DRIVE_FG_PCT DOUBLE,\
+        DRIVE_FTM DOUBLE,\
+        DRIVE_FTA DOUBLE,\
+        DRIVE_FT_PCT DOUBLE,\
+        DRIVE_PTS DOUBLE,\
+        DRIVE_PTS_PCT DOUBLE,\
+        DRIVE_PASSES DOUBLE,\
+        DRIVE_PASSES_PCT DOUBLE,\
+        DRIVE_AST DOUBLE,\
+        DRIVE_AST_PCT DOUBLE,\
+        DRIVE_TOV DOUBLE,\
+        DRIVE_TOV_PCT DOUBLE,\
+        DRIVE_PF DOUBLE,\
+        DRIVE_PF_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(drives_sportvu_query)
+
+        drives_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_drives_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        DRIVES DOUBLE,\
+        DRIVE_FGM DOUBLE,\
+        DRIVE_FGA DOUBLE,\
+        DRIVE_FG_PCT DOUBLE,\
+        DRIVE_FTM DOUBLE,\
+        DRIVE_FTA DOUBLE,\
+        DRIVE_FT_PCT DOUBLE,\
+        DRIVE_PTS DOUBLE,\
+        DRIVE_PTS_PCT DOUBLE,\
+        DRIVE_PASSES DOUBLE,\
+        DRIVE_PASSES_PCT DOUBLE,\
+        DRIVE_AST DOUBLE,\
+        DRIVE_AST_PCT DOUBLE,\
+        DRIVE_TOV DOUBLE,\
+        DRIVE_TOV_PCT DOUBLE,\
+        DRIVE_PF DOUBLE,\
+        DRIVE_PF_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(drives_sportvu_team_query)
+
+        passing_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_passing_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        PASSES_MADE DOUBLE,\
+        PASSES_RECEIVED DOUBLE,\
+        AST DOUBLE,\
+        FT_AST DOUBLE,\
+        SECONDARY_AST DOUBLE,\
+        POTENTIAL_AST DOUBLE,\
+        AST_PTS_CREATED DOUBLE,\
+        AST_ADJ DOUBLE,\
+        AST_TO_PASS_PCT DOUBLE,\
+        AST_TO_PASS_PCT_ADJ DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(passing_sportvu_query)
+
+        passing_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_passing_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        PASSES_MADE DOUBLE,\
+        PASSES_RECEIVED DOUBLE,\
+        AST DOUBLE,\
+        FT_AST DOUBLE,\
+        SECONDARY_AST DOUBLE,\
+        POTENTIAL_AST DOUBLE,\
+        AST_PTS_CREATED DOUBLE,\
+        AST_ADJ DOUBLE,\
+        AST_TO_PASS_PCT DOUBLE,\
+        AST_TO_PASS_PCT_ADJ DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(passing_sportvu_team_query)
+
+        pull_up_shoot_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_pull_up_shoot_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        POINTS DOUBLE,\
+        DRIVE_PTS DOUBLE,\
+        DRIVE_FG_PCT DOUBLE,\
+        CATCH_SHOOT_PTS DOUBLE,\
+        CATCH_SHOOT_FG_PCT DOUBLE,\
+        PULL_UP_PTS DOUBLE,\
+        PULL_UP_FG_PCT DOUBLE,\
+        PAINT_TOUCH_PTS DOUBLE,\
+        PAINT_TOUCH_FG_PCT DOUBLE,\
+        POST_TOUCH_PTS DOUBLE,\
+        POST_TOUCH_FG_PCT DOUBLE,\
+        ELBOW_TOUCH_PTS DOUBLE,\
+        ELBOW_TOUCH_FG_PCT DOUBLE,\
+        EFF_FG_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(pull_up_shoot_sportvu_query)
+
+        pull_up_shoot_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_pull_up_shoot_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        POINTS DOUBLE,\
+        DRIVE_PTS DOUBLE,\
+        DRIVE_FG_PCT DOUBLE,\
+        CATCH_SHOOT_PTS DOUBLE,\
+        CATCH_SHOOT_FG_PCT DOUBLE,\
+        PULL_UP_PTS DOUBLE,\
+        PULL_UP_FG_PCT DOUBLE,\
+        PAINT_TOUCH_PTS DOUBLE,\
+        PAINT_TOUCH_FG_PCT DOUBLE,\
+        POST_TOUCH_PTS DOUBLE,\
+        POST_TOUCH_FG_PCT DOUBLE,\
+        ELBOW_TOUCH_PTS DOUBLE,\
+        ELBOW_TOUCH_FG_PCT DOUBLE,\
+        EFF_FG_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(pull_up_shoot_sportvu_team_query)
+
+        rebounding_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_rebounding_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        OREB DOUBLE,\
+        OREB_CONTEST DOUBLE,\
+        OREB_UNCONTEST DOUBLE,\
+        OREB_CONTEST_PCT DOUBLE,\
+        OREB_CHANCES DOUBLE,\
+        OREB_CHANCE_PCT DOUBLE,\
+        OREB_CHANCE_DEFER DOUBLE,\
+        OREB_CHANCE_PCT_ADJ DOUBLE,\
+        AVG_OREB_DIST DOUBLE,\
+        DREB DOUBLE,\
+        DREB_CONTEST DOUBLE,\
+        DREB_UNCONTEST DOUBLE,\
+        DREB_CONTEST_PCT DOUBLE,\
+        DREB_CHANCES DOUBLE,\
+        DREB_CHANCE_PCT DOUBLE,\
+        DREB_CHANCE_DEFER DOUBLE,\
+        DREB_CHANCE_PCT_ADJ DOUBLE,\
+        AVG_DREB_DIST DOUBLE,\
+        REB DOUBLE,\
+        REB_CONTEST DOUBLE,\
+        REB_UNCONTEST DOUBLE,\
+        REB_CONTEST_PCT DOUBLE,\
+        REB_CHANCES DOUBLE,\
+        REB_CHANCE_PCT DOUBLE,\
+        REB_CHANCE_DEFER DOUBLE,\
+        REB_CHANCE_PCT_ADJ DOUBLE,\
+        AVG_REB_DIST DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(rebounding_sportvu_query)
+
+        rebounding_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_rebounding_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        OREB DOUBLE,\
+        OREB_CONTEST DOUBLE,\
+        OREB_UNCONTEST DOUBLE,\
+        OREB_CONTEST_PCT DOUBLE,\
+        OREB_CHANCES DOUBLE,\
+        OREB_CHANCE_PCT DOUBLE,\
+        OREB_CHANCE_DEFER DOUBLE,\
+        OREB_CHANCE_PCT_ADJ DOUBLE,\
+        AVG_OREB_DIST DOUBLE,\
+        DREB DOUBLE,\
+        DREB_CONTEST DOUBLE,\
+        DREB_UNCONTEST DOUBLE,\
+        DREB_CONTEST_PCT DOUBLE,\
+        DREB_CHANCES DOUBLE,\
+        DREB_CHANCE_PCT DOUBLE,\
+        DREB_CHANCE_DEFER DOUBLE,\
+        DREB_CHANCE_PCT_ADJ DOUBLE,\
+        AVG_DREB_DIST DOUBLE,\
+        REB DOUBLE,\
+        REB_CONTEST DOUBLE,\
+        REB_UNCONTEST DOUBLE,\
+        REB_CONTEST_PCT DOUBLE,\
+        REB_CHANCES DOUBLE,\
+        REB_CHANCE_PCT DOUBLE,\
+        REB_CHANCE_DEFER DOUBLE,\
+        REB_CHANCE_PCT_ADJ DOUBLE,\
+        AVG_REB_DIST DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(rebounding_sportvu_team_query)
+
+        shooting_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_shooting_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        POINTS DOUBLE,\
+        DRIVE_PTS DOUBLE,\
+        DRIVE_FG_PCT DOUBLE,\
+        CATCH_SHOOT_PTS DOUBLE,\
+        CATCH_SHOOT_FG_PCT DOUBLE,\
+        PULL_UP_PTS DOUBLE,\
+        PULL_UP_FG_PCT DOUBLE,\
+        PAINT_TOUCH_PTS DOUBLE,\
+        PAINT_TOUCH_FG_PCT DOUBLE,\
+        POST_TOUCH_PTS DOUBLE,\
+        POST_TOUCH_FG_PCT DOUBLE,\
+        ELBOW_TOUCH_PTS DOUBLE,\
+        ELBOW_TOUCH_FG_PCT DOUBLE,\
+        EFF_FG_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(shooting_sportvu_query)
+
+        shooting_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_shooting_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        POINTS DOUBLE,\
+        DRIVE_PTS DOUBLE,\
+        DRIVE_FG_PCT DOUBLE,\
+        CATCH_SHOOT_PTS DOUBLE,\
+        CATCH_SHOOT_FG_PCT DOUBLE,\
+        PULL_UP_PTS DOUBLE,\
+        PULL_UP_FG_PCT DOUBLE,\
+        PAINT_TOUCH_PTS DOUBLE,\
+        PAINT_TOUCH_FG_PCT DOUBLE,\
+        POST_TOUCH_PTS DOUBLE,\
+        POST_TOUCH_FG_PCT DOUBLE,\
+        ELBOW_TOUCH_PTS DOUBLE,\
+        ELBOW_TOUCH_FG_PCT DOUBLE,\
+        EFF_FG_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(shooting_sportvu_team_query)
+
+        speed_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_speed_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        DIST_FEET DOUBLE,\
+        DIST_MILES DOUBLE,\
+        DIST_MILES_OFF DOUBLE,\
+        DIST_MILES_DEF DOUBLE,\
+        AVG_SPEED DOUBLE,\
+        AVG_SPEED_OFF DOUBLE,\
+        AVG_SPEED_DEF DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(speed_sportvu_query)
+
+        speed_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_speed_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        DIST_FEET DOUBLE,\
+        DIST_MILES DOUBLE,\
+        DIST_MILES_OFF DOUBLE,\
+        DIST_MILES_DEF DOUBLE,\
+        AVG_SPEED DOUBLE,\
+        AVG_SPEED_OFF DOUBLE,\
+        AVG_SPEED_DEF DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(speed_sportvu_team_query)
+
+        elbow_touches_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_elbow_touches_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        TOUCHES DOUBLE,\
+        ELBOW_TOUCHES DOUBLE,\
+        ELBOW_TOUCH_FGM DOUBLE,\
+        ELBOW_TOUCH_FGA DOUBLE,\
+        ELBOW_TOUCH_FG_PCT DOUBLE,\
+        ELBOW_TOUCH_FTM DOUBLE,\
+        ELBOW_TOUCH_FTA DOUBLE,\
+        ELBOW_TOUCH_FT_PCT DOUBLE,\
+        ELBOW_TOUCH_PTS DOUBLE,\
+        ELBOW_TOUCH_PTS_PCT DOUBLE,\
+        ELBOW_TOUCH_PASSES DOUBLE,\
+        ELBOW_TOUCH_PASSES_PCT DOUBLE,\
+        ELBOW_TOUCH_AST DOUBLE,\
+        ELBOW_TOUCH_AST_PCT DOUBLE,\
+        ELBOW_TOUCH_TOV DOUBLE,\
+        ELBOW_TOUCH_TOV_PCT DOUBLE,\
+        ELBOW_TOUCH_FOULS DOUBLE,\
+        ELBOW_TOUCH_FOULS_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(elbow_touches_sportvu_query)
+
+        elbow_touches_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_elbow_touches_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        TOUCHES DOUBLE,\
+        ELBOW_TOUCHES DOUBLE,\
+        ELBOW_TOUCH_FGM DOUBLE,\
+        ELBOW_TOUCH_FGA DOUBLE,\
+        ELBOW_TOUCH_FG_PCT DOUBLE,\
+        ELBOW_TOUCH_FTM DOUBLE,\
+        ELBOW_TOUCH_FTA DOUBLE,\
+        ELBOW_TOUCH_FT_PCT DOUBLE,\
+        ELBOW_TOUCH_PTS DOUBLE,\
+        ELBOW_TOUCH_PTS_PCT DOUBLE,\
+        ELBOW_TOUCH_PASSES DOUBLE,\
+        ELBOW_TOUCH_PASSES_PCT DOUBLE,\
+        ELBOW_TOUCH_AST DOUBLE,\
+        ELBOW_TOUCH_AST_PCT DOUBLE,\
+        ELBOW_TOUCH_TOV DOUBLE,\
+        ELBOW_TOUCH_TOV_PCT DOUBLE,\
+        ELBOW_TOUCH_FOULS DOUBLE,\
+        ELBOW_TOUCH_FOULS_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(elbow_touches_sportvu_team_query)
+
+        post_touches_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_post_touches_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        TOUCHES DOUBLE,\
+        POST_TOUCHES DOUBLE,\
+        POST_TOUCH_FGM DOUBLE,\
+        POST_TOUCH_FGA DOUBLE,\
+        POST_TOUCH_FG_PCT DOUBLE,\
+        POST_TOUCH_FTM DOUBLE,\
+        POST_TOUCH_FTA DOUBLE,\
+        POST_TOUCH_FT_PCT DOUBLE,\
+        POST_TOUCH_PTS DOUBLE,\
+        POST_TOUCH_PTS_PCT DOUBLE,\
+        POST_TOUCH_PASSES DOUBLE,\
+        POST_TOUCH_PASSES_PCT DOUBLE,\
+        POST_TOUCH_AST DOUBLE,\
+        POST_TOUCH_AST_PCT DOUBLE,\
+        POST_TOUCH_TOV DOUBLE,\
+        POST_TOUCH_TOV_PCT DOUBLE,\
+        POST_TOUCH_FOULS DOUBLE,\
+        POST_TOUCH_FOULS_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(post_touches_sportvu_query)
+
+        post_touches_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_post_touches_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        TOUCHES DOUBLE,\
+        POST_TOUCHES DOUBLE,\
+        POST_TOUCH_FGM DOUBLE,\
+        POST_TOUCH_FGA DOUBLE,\
+        POST_TOUCH_FG_PCT DOUBLE,\
+        POST_TOUCH_FTM DOUBLE,\
+        POST_TOUCH_FTA DOUBLE,\
+        POST_TOUCH_FT_PCT DOUBLE,\
+        POST_TOUCH_PTS DOUBLE,\
+        POST_TOUCH_PTS_PCT DOUBLE,\
+        POST_TOUCH_PASSES DOUBLE,\
+        POST_TOUCH_PASSES_PCT DOUBLE,\
+        POST_TOUCH_AST DOUBLE,\
+        POST_TOUCH_AST_PCT DOUBLE,\
+        POST_TOUCH_TOV DOUBLE,\
+        POST_TOUCH_TOV_PCT DOUBLE,\
+        POST_TOUCH_FOULS DOUBLE,\
+        POST_TOUCH_FOULS_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(post_touches_sportvu_team_query)
+
+        paint_touches_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_paint_touches_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        TOUCHES DOUBLE,\
+        PAINT_TOUCHES DOUBLE,\
+        PAINT_TOUCH_FGM DOUBLE,\
+        PAINT_TOUCH_FGA DOUBLE,\
+        PAINT_TOUCH_FG_PCT DOUBLE,\
+        PAINT_TOUCH_FTM DOUBLE,\
+        PAINT_TOUCH_FTA DOUBLE,\
+        PAINT_TOUCH_FT_PCT DOUBLE,\
+        PAINT_TOUCH_PTS DOUBLE,\
+        PAINT_TOUCH_PTS_PCT DOUBLE,\
+        PAINT_TOUCH_PASSES DOUBLE,\
+        PAINT_TOUCH_PASSES_PCT DOUBLE,\
+        PAINT_TOUCH_AST DOUBLE,\
+        PAINT_TOUCH_AST_PCT DOUBLE,\
+        PAINT_TOUCH_TOV DOUBLE,\
+        PAINT_TOUCH_TOV_PCT DOUBLE,\
+        PAINT_TOUCH_FOULS DOUBLE,\
+        PAINT_TOUCH_FOULS_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(paint_touches_sportvu_query)
+
+        paint_touches_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_paint_touches_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        TOUCHES DOUBLE,\
+        PAINT_TOUCHES DOUBLE,\
+        PAINT_TOUCH_FGM DOUBLE,\
+        PAINT_TOUCH_FGA DOUBLE,\
+        PAINT_TOUCH_FG_PCT DOUBLE,\
+        PAINT_TOUCH_FTM DOUBLE,\
+        PAINT_TOUCH_FTA DOUBLE,\
+        PAINT_TOUCH_FT_PCT DOUBLE,\
+        PAINT_TOUCH_PTS DOUBLE,\
+        PAINT_TOUCH_PTS_PCT DOUBLE,\
+        PAINT_TOUCH_PASSES DOUBLE,\
+        PAINT_TOUCH_PASSES_PCT DOUBLE,\
+        PAINT_TOUCH_AST DOUBLE,\
+        PAINT_TOUCH_AST_PCT DOUBLE,\
+        PAINT_TOUCH_TOV DOUBLE,\
+        PAINT_TOUCH_TOV_PCT DOUBLE,\
+        PAINT_TOUCH_FOULS DOUBLE,\
+        PAINT_TOUCH_FOULS_PCT DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(paint_touches_sportvu_team_query)
+
+        possessions_sportvu_query = 'CREATE TABLE IF NOT EXISTS sportvu_possessions_game_logs\
+        (\
+        PLAYER_ID VARCHAR(255),\
+        PLAYER_NAME VARCHAR(255),\
+        TEAM_ID VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        POINTS DOUBLE,\
+        TOUCHES DOUBLE,\
+        FRONT_CT_TOUCHES DOUBLE,\
+        TIME_OF_POSS DOUBLE,\
+        AVG_SEC_PER_TOUCH DOUBLE,\
+        AVG_DRIB_PER_TOUCH DOUBLE,\
+        PTS_PER_TOUCH DOUBLE,\
+        ELBOW_TOUCHES DOUBLE,\
+        POST_TOUCHES DOUBLE,\
+        PAINT_TOUCHES DOUBLE,\
+        PTS_PER_ELBOW_TOUCH DOUBLE,\
+        PTS_PER_POST_TOUCH DOUBLE,\
+        PTS_PER_PAINT_TOUCH DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        );'
+        cursor.execute(possessions_sportvu_query)
+
+        possessions_sportvu_team_query = 'CREATE TABLE IF NOT EXISTS sportvu_possessions_team_game_logs\
+        (\
+        TEAM_ID VARCHAR(255),\
+        TEAM_NAME VARCHAR(255),\
+        TEAM_ABBREVIATION VARCHAR(255),\
+        GAME_ID VARCHAR(255),\
+        GP INT,\
+        W INT,\
+        L INT,\
+        MIN DOUBLE,\
+        POINTS DOUBLE,\
+        TOUCHES DOUBLE,\
+        FRONT_CT_TOUCHES DOUBLE,\
+        TIME_OF_POSS DOUBLE,\
+        AVG_SEC_PER_TOUCH DOUBLE,\
+        AVG_DRIB_PER_TOUCH DOUBLE,\
+        PTS_PER_TOUCH DOUBLE,\
+        ELBOW_TOUCHES DOUBLE,\
+        POST_TOUCHES DOUBLE,\
+        PAINT_TOUCHES DOUBLE,\
+        PTS_PER_ELBOW_TOUCH DOUBLE,\
+        PTS_PER_POST_TOUCH DOUBLE,\
+        PTS_PER_PAINT_TOUCH DOUBLE,\
+        `DATE` DATE,\
+        IS_REGULAR_SEASON BOOLEAN,\
+        PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(possessions_sportvu_team_query)
 
