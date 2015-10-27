@@ -1,4 +1,4 @@
-# Takes two arguments, start date and end date. Date format YYYY-MM-DD
+# Takes two arguments, start date and end date. Date format YYYY-MM-DD. If no dates entered gets yesterday
 import json
 import sys
 import datetime
@@ -12,27 +12,32 @@ import scrape.helper
 
 def main():
     if len(sys.argv) < 3:
-        print "Enter a start and end date with format YYYY-MM-DD"
-        sys.exit(0)
+        start_date = datetime.date.today() - datetime.timedelta(1)
+        end_date = datetime.date.today() - datetime.timedelta(1)
     elif len(sys.argv) > 3:
         print "Too many arguments. Enter a start and end date with format YYYY-MM-DD"
         sys.exit(0)
+    else:
+        start = sys.argv[1]
+        end = sys.argv[2]
+        # validate dates
+        try:
+            datetime.datetime.strptime(start, '%Y-%m-%d')
+        except:
+            print 'invalid format for start date'
+            sys.exit(0)
 
-    start = sys.argv[1]
-    end = sys.argv[2]
+        try:
+            datetime.datetime.strptime(end, '%Y-%m-%d')
+        except:
+            print 'invalid format for end date'
+            sys.exit(0)
 
-    # validate dates
-    try:
-        datetime.datetime.strptime(start, '%Y-%m-%d')
-    except:
-        print 'invalid format for start date'
-        sys.exit(0)
+        start_split = start.split("-")
+        end_split = end.split("-")
 
-    try:
-        datetime.datetime.strptime(end, '%Y-%m-%d')
-    except:
-        print 'invalid format for end date'
-        sys.exit(0)
+        start_date = datetime.date(int(start_split[0]), int(start_split[1]), int(start_split[2]))
+        end_date = datetime.date(int(end_split[0]), int(end_split[1]), int(end_split[2]))
 
     logging.basicConfig(filename='games.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     config=json.loads(open('config.json').read())
@@ -43,12 +48,6 @@ def main():
     if season_pattern.match(season) == None:
         print "Invalid Season format. Example format: 2014-15"
         sys.exit(0)
-
-    start_split = start.split("-")
-    end_split = end.split("-")
-
-    start_date = datetime.date(int(start_split[0]), int(start_split[1]), int(start_split[2]))
-    end_date = datetime.date(int(end_split[0]), int(end_split[1]), int(end_split[2]))
 
     db_storage = storage.db.Storage(config['host'], config['username'], config['password'], config['database'])
 
