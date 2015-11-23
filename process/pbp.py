@@ -81,7 +81,7 @@ class Lineups:
         # for a given period data frame, return a data frame with new columns for the players on the floor
         period = period.reset_index(drop=True)
         game_id = period['GAME_ID'].iloc[0]
-        start_event_num = period['EVENTNUM'].min()
+        start_event_num = period[period['PCTIMESTRING'] != "12:00"]['EVENTNUM'].min()
         period_number = period['PERIOD'].mean()
         first_sub = period[period['EVENTMSGTYPE'] == 8]['EVENTNUM'].min()
         while True:
