@@ -742,20 +742,14 @@ class Db:
         W INT,\
         L INT,\
         MIN DOUBLE,\
-        POINTS DOUBLE,\
-        DRIVE_PTS DOUBLE,\
-        DRIVE_FG_PCT DOUBLE,\
-        CATCH_SHOOT_PTS DOUBLE,\
-        CATCH_SHOOT_FG_PCT DOUBLE,\
-        PULL_UP_PTS DOUBLE,\
+        PULL_UP_FGM DOUBLE,\
+        PULL_UP_FGA DOUBLE,\
         PULL_UP_FG_PCT DOUBLE,\
-        PAINT_TOUCH_PTS DOUBLE,\
-        PAINT_TOUCH_FG_PCT DOUBLE,\
-        POST_TOUCH_PTS DOUBLE,\
-        POST_TOUCH_FG_PCT DOUBLE,\
-        ELBOW_TOUCH_PTS DOUBLE,\
-        ELBOW_TOUCH_FG_PCT DOUBLE,\
-        EFF_FG_PCT DOUBLE,\
+        PULL_UP_FG3M DOUBLE,\
+        PULL_UP_FG3A DOUBLE,\
+        PULL_UP_FG3_PCT DOUBLE,\
+        PULL_UP_PTS DOUBLE,\
+        PULL_UP_EFG_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
         PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, IS_REGULAR_SEASON)\
@@ -771,20 +765,14 @@ class Db:
         W INT,\
         L INT,\
         MIN DOUBLE,\
-        POINTS DOUBLE,\
-        DRIVE_PTS DOUBLE,\
-        DRIVE_FG_PCT DOUBLE,\
-        CATCH_SHOOT_PTS DOUBLE,\
-        CATCH_SHOOT_FG_PCT DOUBLE,\
-        PULL_UP_PTS DOUBLE,\
+        PULL_UP_FGM DOUBLE,\
+        PULL_UP_FGA DOUBLE,\
         PULL_UP_FG_PCT DOUBLE,\
-        PAINT_TOUCH_PTS DOUBLE,\
-        PAINT_TOUCH_FG_PCT DOUBLE,\
-        POST_TOUCH_PTS DOUBLE,\
-        POST_TOUCH_FG_PCT DOUBLE,\
-        ELBOW_TOUCH_PTS DOUBLE,\
-        ELBOW_TOUCH_FG_PCT DOUBLE,\
-        EFF_FG_PCT DOUBLE,\
+        PULL_UP_FG3M DOUBLE,\
+        PULL_UP_FG3A DOUBLE,\
+        PULL_UP_FG3_PCT DOUBLE,\
+        PULL_UP_PTS DOUBLE,\
+        PULL_UP_EFG_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
         PRIMARY KEY(TEAM_ID, `DATE`, IS_REGULAR_SEASON)\
@@ -1259,7 +1247,7 @@ class Db:
         CATCH_SHOOT_EFG_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(catch_shoot_sportvu_query)
 
@@ -1306,7 +1294,7 @@ class Db:
         DEF_RIM_FG_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(defense_sportvu_query)
 
@@ -1362,7 +1350,7 @@ class Db:
         DRIVE_PF_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(drives_sportvu_query)
 
@@ -1422,7 +1410,7 @@ class Db:
         AST_TO_PASS_PCT_ADJ DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(passing_sportvu_query)
 
@@ -1463,23 +1451,17 @@ class Db:
         W INT,\
         L INT,\
         MIN DOUBLE,\
-        POINTS DOUBLE,\
-        DRIVE_PTS DOUBLE,\
-        DRIVE_FG_PCT DOUBLE,\
-        CATCH_SHOOT_PTS DOUBLE,\
-        CATCH_SHOOT_FG_PCT DOUBLE,\
-        PULL_UP_PTS DOUBLE,\
+        PULL_UP_FGM DOUBLE,\
+        PULL_UP_FGA DOUBLE,\
         PULL_UP_FG_PCT DOUBLE,\
-        PAINT_TOUCH_PTS DOUBLE,\
-        PAINT_TOUCH_FG_PCT DOUBLE,\
-        POST_TOUCH_PTS DOUBLE,\
-        POST_TOUCH_FG_PCT DOUBLE,\
-        ELBOW_TOUCH_PTS DOUBLE,\
-        ELBOW_TOUCH_FG_PCT DOUBLE,\
-        EFF_FG_PCT DOUBLE,\
+        PULL_UP_FG3M DOUBLE,\
+        PULL_UP_FG3A DOUBLE,\
+        PULL_UP_FG3_PCT DOUBLE,\
+        PULL_UP_PTS DOUBLE,\
+        PULL_UP_EFG_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(pull_up_shoot_sportvu_query)
 
@@ -1493,20 +1475,14 @@ class Db:
         W INT,\
         L INT,\
         MIN DOUBLE,\
-        POINTS DOUBLE,\
-        DRIVE_PTS DOUBLE,\
-        DRIVE_FG_PCT DOUBLE,\
-        CATCH_SHOOT_PTS DOUBLE,\
-        CATCH_SHOOT_FG_PCT DOUBLE,\
-        PULL_UP_PTS DOUBLE,\
+        PULL_UP_FGM DOUBLE,\
+        PULL_UP_FGA DOUBLE,\
         PULL_UP_FG_PCT DOUBLE,\
-        PAINT_TOUCH_PTS DOUBLE,\
-        PAINT_TOUCH_FG_PCT DOUBLE,\
-        POST_TOUCH_PTS DOUBLE,\
-        POST_TOUCH_FG_PCT DOUBLE,\
-        ELBOW_TOUCH_PTS DOUBLE,\
-        ELBOW_TOUCH_FG_PCT DOUBLE,\
-        EFF_FG_PCT DOUBLE,\
+        PULL_UP_FG3M DOUBLE,\
+        PULL_UP_FG3A DOUBLE,\
+        PULL_UP_FG3_PCT DOUBLE,\
+        PULL_UP_PTS DOUBLE,\
+        PULL_UP_EFG_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
         PRIMARY KEY(TEAM_ID, `DATE`, GAME_ID)\
@@ -1553,7 +1529,7 @@ class Db:
         AVG_REB_DIST DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(rebounding_sportvu_query)
 
@@ -1627,7 +1603,7 @@ class Db:
         EFF_FG_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(shooting_sportvu_query)
 
@@ -1681,7 +1657,7 @@ class Db:
         AVG_SPEED_DEF DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(speed_sportvu_query)
 
@@ -1739,7 +1715,7 @@ class Db:
         ELBOW_TOUCH_FOULS_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(elbow_touches_sportvu_query)
 
@@ -1808,7 +1784,7 @@ class Db:
         POST_TOUCH_FOULS_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(post_touches_sportvu_query)
 
@@ -1877,7 +1853,7 @@ class Db:
         PAINT_TOUCH_FOULS_PCT DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(paint_touches_sportvu_query)
 
@@ -1941,7 +1917,7 @@ class Db:
         PTS_PER_PAINT_TOUCH DOUBLE,\
         `DATE` DATE,\
         IS_REGULAR_SEASON BOOLEAN,\
-        PRIMARY KEY(PLAYER_ID, TEAM_ABBREVIATION, `DATE`, GAME_ID)\
+        PRIMARY KEY(PLAYER_ID, TEAM_ID, `DATE`, GAME_ID)\
         );'
         cursor.execute(possessions_sportvu_query)
 
