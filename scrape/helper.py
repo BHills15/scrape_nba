@@ -17,6 +17,14 @@ def get_data_from_url_with_parameters_add_game_id(base_url, parameters, game_id,
     rows = data['resultSets'][index]['rowSet']
     return [dict(zip(headers, [game_id] + row)) for row in rows]
 
+def get_data_from_url_with_parameters_add_player_id(base_url, parameters, player_id, player_name, index):
+    response = requests.get(base_url, params=parameters)
+    data = response.json()
+    headers = data['resultSets'][index]['headers']
+    headers = ["PLAYER_ID", "PLAYER_NAME"] + headers
+    rows = data['resultSets'][index]['rowSet']
+    return [dict(zip(headers, [player_id, player_name] + row)) for row in rows]
+
 def get_data_from_url(url, index):
     response = urllib2.urlopen(url)
     data = json.loads(response.read())

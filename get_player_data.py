@@ -22,7 +22,7 @@ def main():
         season_type = "Playoffs"
         game_prefix = "004"
     elif is_regular_season == 1:
-        season_type = "Regular+Season"
+        season_type = "Regular Season"
         game_prefix = "002"
     else:
         print "Invalid is_regular_season value. Use 0 for regular season, 1 for playoffs"
@@ -52,7 +52,6 @@ def main():
                 db_storage.insert(player_data.rebound_logs(), "player_tracking_rebound_logs")
                 db_storage.insert_with_date_and_season_type(player_data.passes_made(), "player_tracking_passes_made", is_regular_season)
                 db_storage.insert_with_date_and_season_type(player_data.passes_received(), "player_tracking_passes_received", is_regular_season)
-
                 db_storage.commit()
             except:
                 logging.error('player %s not stored', player_id)
