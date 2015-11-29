@@ -1,5 +1,21 @@
 import json
 import urllib2
+import requests
+
+def get_data_from_url_with_parameters(base_url, parameters, index):
+    response = requests.get(base_url, params=parameters)
+    data = response.json()
+    headers = data['resultSets'][index]['headers']
+    rows = data['resultSets'][index]['rowSet']
+    return [dict(zip(headers, row)) for row in rows]
+
+def get_data_from_url_with_parameters_add_game_id(base_url, parameters, game_id, index):
+    response = requests.get(base_url, params=parameters)
+    data = response.json()
+    headers = data['resultSets'][index]['headers']
+    headers = ["GAME_ID"] + headers
+    rows = data['resultSets'][index]['rowSet']
+    return [dict(zip(headers, [game_id] + row)) for row in rows]
 
 def get_data_from_url(url, index):
     response = urllib2.urlopen(url)

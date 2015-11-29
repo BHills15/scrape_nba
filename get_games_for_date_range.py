@@ -49,6 +49,16 @@ def main():
         print "Invalid Season format. Example format: 2014-15"
         sys.exit(0)
 
+    is_regular_season = config["is_regular_season"]
+    if is_regular_season == 0:
+        season_type = "Playoffs"
+        game_prefix = "004"
+    elif is_regular_season == 1:
+        season_type = "Regular Season"
+        game_prefix = "002"
+    else:
+        print "Invalid is_regular_season value. Use 0 for regular season, 1 for playoffs"
+
     db_storage = storage.db.Storage(config['host'], config['username'], config['password'], config['database'])
 
     for dt in rrule(DAILY, dtstart=start_date, until=end_date):
@@ -56,7 +66,7 @@ def main():
         for game_id in games:
             if game_id[:3] == "002" or game_id[:3] == "004":
                 try:
-                    game_data = game_stats.GameData(game_id, season)
+                    game_data = game_stats.GameData(game_id, season, season_type)
                     db_storage.insert(game_data.pbp(), "pbp")
                     db_storage.insert(game_data.player_tracking_boxscore(), "player_tracking_boxscores")
                     db_storage.insert(game_data.player_tracking_boxscore_team(), "player_tracking_boxscores_team")
