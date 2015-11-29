@@ -22,7 +22,7 @@ def main():
     if is_regular_season == 0:
         season_type = "Playoffs"
     elif is_regular_season == 1:
-        season_type = "Regular+Season"
+        season_type = "Regular Season"
     else:
         print "Invalid is_regular_season value. Use 0 for regular season, 1 for playoffs"
 

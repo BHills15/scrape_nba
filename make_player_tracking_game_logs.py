@@ -54,7 +54,7 @@ def main():
     if is_regular_season == 0:
         season_type = "Playoffs"
     elif is_regular_season == 1:
-        season_type = "Regular+Season"
+        season_type = "Regular Season"
     else:
         print "Invalid is_regular_season value. Use 0 for regular season, 1 for playoffs"
 
@@ -81,9 +81,9 @@ def main():
         month = dt.strftime("%m")
         year = dt.strftime("%Y")
 
-        date = month + "%2F" + day + "%2F" + year
+        date = month + "/" + day + "/" + year
         date_to_store = year + "-" + month + "-" + day
-
+        
         try:
             catch_shoot_player = sportvu_stats.get_sportvu_data_for_stat(season, season_type, "Player", "CatchShoot", start_date=date, end_date=date)
             db_storage.insert_with_date_and_season_type(sportvu_stats.add_game_id_to_game_log_for_player(catch_shoot_player, date_to_store, db_storage, game_player_map), "sportvu_catch_shoot_game_logs", is_regular_season, date=date_to_store)
