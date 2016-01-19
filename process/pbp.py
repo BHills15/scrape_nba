@@ -1,20 +1,22 @@
 import json
-import urllib2
+import requests
 import pandas as pd
 import scrape.helper
 
 class Lineups:
     def __init__(self, game_data):
-        self.moments_base_url = "http://stats.nba.com/stats/locations_getmoments/?eventid=<event_id>&gameid="
+        self.moments_base_url = "http://stats.nba.com/stats/locations_getmoments/"
         self.boxscore_base_url = "http://stats.nba.com/stats/boxscore?GameID=<game_id>&RangeType=2&StartPeriod=0&EndPeriod=0&StartRange=<start>&EndRange=<end>"
         self.game_data = game_data
 
     def get_players_on_floor_for_moment(self, game_id, event_id):
         # for a given game_id and event_id, return a dict with a list players on the floor for each team and team ids
-        url = self.moments_base_url.replace("<event_id>", str(event_id))
-        url = url + game_id
-        response = urllib2.urlopen(url)
-        data = json.loads(response.read())
+        parameters = {
+                        "gameid": game_id,
+                        "eventid": event_id
+        }
+        response = requests.get(self.moments_base_url, params=parameters)
+        data = response.json()
         players = {}
         players['home_team_id'] = data["moments"][0][5][1][0]
         players['away_team_id'] = data["moments"][0][5][6][0]
@@ -56,11 +58,17 @@ class Lineups:
                 end = start + (300-period["seconds"].iloc[-1])*10
 
         period.drop('seconds', axis=1, inplace=True)
-        boxscore_link = self.boxscore_base_url.replace("<game_id>", game_id)
-        boxscore_link = boxscore_link.replace("<start>", str(start))
-        boxscore_link = boxscore_link.replace("<end>", str(end))
 
-        period_starters = pd.DataFrame(scrape.helper.get_data_from_url(boxscore_link, 4))
+        boxscore_parameters = {
+                                "GameID": game_id,
+                                "StartRange": start,
+                                "EndRange": end,
+                                "RangeType": 2,
+                                "StartPeriod": 0,
+                                "EndPeriod": 0
+        }
+
+        period_starters = pd.DataFrame(scrape.helper.get_data_from_url_with_parameters(self.boxscore_base_url, boxscore_parameters, 4))
 
         split = period_starters['MIN'].str.split(":")
         period_starters['seconds'] = split.map(lambda x: int(x[0])*60 + int(x[1]))
@@ -132,4 +140,6 @@ class Lineups:
         return period
 
     def get_players_on_floor_for_game(self):
-        return pd.DataFrame.to_dict(self.game_data.groupby("PERIOD").apply(self.get_players_on_floor_for_period), "records")
+        players_on_floor_df = self.game_data.groupby("PERIOD").apply(self.get_players_on_floor_for_period)
+        # convert nan values to None to be inserted in MySQL db
+        return pd.DataFrame.to_dict(players_on_floor_df.where((pd.notnull(players_on_floor_df)), None), 'records')

@@ -1,35 +1,45 @@
 import json
 import logging
+from sqlalchemy import create_engine, distinct
+from sqlalchemy.sql import select
+from pandas import DataFrame
 
 from process import pbp
-import storage.db
+from storage import schema
+from utils import utils
 
 def main():
     logging.basicConfig(filename='process_pbp.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     config=json.loads(open('config.json').read())
 
-    db_storage = storage.db.Storage(config['host'], config['username'], config['password'], config['database'])
+    # connect to database
+    username = config['username']
+    password = config['password']
+    host = config['host']
+    database = config['database']
+
+    engine = create_engine('mysql://'+username+':'+password+'@'+host+'/'+database)
+    conn = engine.connect()
 
     # get game_ids to process
-    missing_games_query = "select distinct GAME_ID from pbp where HOME_PLAYER1 is NULL"
-    games_to_process = db_storage.query(missing_games_query)
+    games_to_process = []
+    missing_games_query = select([distinct(schema.pbp.c.GAME_ID)]).where(schema.pbp.c.HOME_PLAYER1 == None)
+    for game in conn.execute(missing_games_query):
+        games_to_process.append(game.GAME_ID)
 
-    # process games
-    for game in games_to_process:
-        game_id = game[0]
+    # add players on floor to database
+    for game_id in games_to_process:
         try:
-            query = "select * from pbp where GAME_ID = '"+game_id+"'"
-            pbp_data = db_storage.query_df(query)
+            pbp_query = select([(schema.pbp)]).where(schema.pbp.c.GAME_ID == game_id)
+            results = conn.execute(pbp_query)
+            pbp_data = DataFrame(results.fetchall())
+            pbp_data.columns = results.keys()
 
             game_data = pbp.Lineups(pbp_data)
             pbp_with_lineups =  game_data.get_players_on_floor_for_game()
-            db_storage.insert(pbp_with_lineups, "pbp")
-
-            db_storage.commit()
+            conn.execute(schema.pbp.insert(replace_string=""), pbp_with_lineups)
         except:
-            logging.error('game %s not processed', game_id)
-
-    db_storage.close()
+            logging.error(utils.LogException())
 
 
 if __name__ == '__main__':

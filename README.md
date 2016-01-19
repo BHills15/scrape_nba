@@ -46,3 +46,8 @@ python get_synergy.py
 ```
 python get_players_on_floor.py
 ```
+
+* Make player tracking game logs
+```
+python make_player_tracking_game_logs.py
+```

@@ -30,29 +30,25 @@ def get_sportvu_data_for_stat(season, season_type, player_or_team, measure_type,
     base_url = "http://stats.nba.com/stats/leaguedashptstats"
     return helper.get_data_from_url_with_parameters(base_url, parameters, 0)
 
-def add_game_id_to_game_log_for_player(daily_data, date, storage, player_game_map):
-    games = storage.query('select GAME_ID from game_summary where GAME_DATE_EST = "' + date + 'T00:00:00"')
+def add_game_id_to_game_log_for_player(daily_data, date, game_ids, player_game_map):
     to_return = []
     for row in daily_data:
         player_id = str(row["PLAYER_ID"])
-        for game in games:
-            game_id = game[0]
+        for game_id in game_ids:
             if game_id in player_game_map[player_id].keys():
-                row["GAME_ID"] = game_id
-                row["TEAM_ID"] = player_game_map[player_id][game_id]
+                row[u'GAME_ID'] = game_id
+                row[u'TEAM_ID'] = player_game_map[player_id][game_id]
                 to_return.append(row)
                 break
     return to_return
 
-def add_game_id_to_game_log_for_team(daily_data, date, storage, team_game_map):
-    games = storage.query('select GAME_ID from game_summary where GAME_DATE_EST = "' + date + 'T00:00:00"')
+def add_game_id_to_game_log_for_team(daily_data, date, game_ids, team_game_map):
     to_return = []
     for row in daily_data:
         team_id = str(row["TEAM_ID"])
-        for game in games:
-            game_id = game[0]
+        for game_id in game_ids:
             if game_id in team_game_map[team_id].keys():
-                row["GAME_ID"] = game_id
+                row[u'GAME_ID'] = game_id
                 to_return.append(row)
                 break
     return to_return

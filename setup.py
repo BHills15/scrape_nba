@@ -1,9 +1,15 @@
 import json
-import storage.db
+from sqlalchemy import create_engine
+from storage import schema
 
-config=open('config.json').read()
-db_config = json.loads(config)
+config=json.loads(open('config.json').read())
+username = config['username']
+password = config['password']
+host = config['host']
+database = config['database']
 
-db = storage.db.Db(db_config['host'], db_config['username'], db_config['password'], db_config['database'])
-db.create_db()
-db.create_tables()
+engine = create_engine('mysql://'+username+':'+password+'@'+host)
+engine.execute("CREATE DATABASE "+database)
+engine.execute("USE "+database)
+
+schema.metadata.create_all(engine)

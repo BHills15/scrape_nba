@@ -5,12 +5,25 @@ import datetime
 from dateutil.rrule import rrule, DAILY
 import logging
 import re
+import linecache
+from sqlalchemy import create_engine
 
 from scrape import game_stats
-import storage.db
-import scrape.helper
+from storage import schema
+from scrape import helper
+from utils import utils
+
+def store_data(connection, table, data):
+    try:
+        connection.execute(table.insert(replace_string=""), data)
+    except:
+        logging.error(utils.LogException())
+    return None
 
 def main():
+    logging.basicConfig(filename='games.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    config=json.loads(open('config.json').read())
+
     if len(sys.argv) < 3:
         start_date = datetime.date.today() - datetime.timedelta(1)
         end_date = datetime.date.today() - datetime.timedelta(1)
@@ -39,9 +52,6 @@ def main():
         start_date = datetime.date(int(start_split[0]), int(start_split[1]), int(start_split[2]))
         end_date = datetime.date(int(end_split[0]), int(end_split[1]), int(end_split[2]))
 
-    logging.basicConfig(filename='games.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-    config=json.loads(open('config.json').read())
-
     season = config["season"]
     # make sure season is valid format
     season_pattern = re.compile('\d{4}[-]\d{2}$')
@@ -58,42 +68,43 @@ def main():
         game_prefix = "002"
     else:
         print "Invalid is_regular_season value. Use 0 for regular season, 1 for playoffs"
+        sys.exit(0)
 
-    db_storage = storage.db.Storage(config['host'], config['username'], config['password'], config['database'])
+    username = config['username']
+    password = config['password']
+    host = config['host']
+    database = config['database']
+
+    engine = create_engine('mysql://'+username+':'+password+'@'+host+'/'+database)
+    conn = engine.connect()
 
     for dt in rrule(DAILY, dtstart=start_date, until=end_date):
-        games = scrape.helper.get_game_ids_for_date(dt.strftime("%Y-%m-%d"))
+        games = helper.get_game_ids_for_date(dt.strftime("%Y-%m-%d"))
         for game_id in games:
-            if game_id[:3] == "002" or game_id[:3] == "004":
-                try:
-                    game_data = game_stats.GameData(game_id, season, season_type)
-                    db_storage.insert(game_data.pbp(), "pbp")
-                    db_storage.insert(game_data.player_tracking_boxscore(), "player_tracking_boxscores")
-                    db_storage.insert(game_data.player_tracking_boxscore_team(), "player_tracking_boxscores_team")
-                    db_storage.insert(game_data.shots(), "shots")
-                    db_storage.insert(game_data.traditional_boxscore(), "traditional_boxscores")
-                    db_storage.insert(game_data.traditional_boxscore_team(), "traditional_boxscores_team")
-                    db_storage.insert(game_data.advanced_boxscore(), "advanced_boxscores")
-                    db_storage.insert(game_data.advanced_boxscore_team(), "advanced_boxscores_team")
-                    db_storage.insert(game_data.scoring_boxscore(), "scoring_boxscores")
-                    db_storage.insert(game_data.scoring_boxscore_team(), "scoring_boxscores_team")
-                    db_storage.insert(game_data.misc_boxscore(), "misc_boxscores")
-                    db_storage.insert(game_data.misc_boxscore_team(), "misc_boxscores_team")
-                    db_storage.insert(game_data.usage_boxscore(), "usage_boxscores")
-                    db_storage.insert(game_data.four_factors_boxscore(), "four_factors_boxscores")
-                    db_storage.insert(game_data.four_factors_boxscore_team(), "four_factors_boxscores_team")
-                    db_storage.insert(game_data.game_info(), "game_info")
-                    db_storage.insert(game_data.game_summary(), "game_summary")
-                    db_storage.insert(game_data.line_score(), "line_score")
-                    db_storage.insert(game_data.other_stats(), "other_stats")
-                    db_storage.insert(game_data.officials(), "officials")
-                    db_storage.insert(game_data.inactives(), "inactives")
+            if game_id[:3] == game_prefix:
+                game_data = game_stats.GameData(game_id, season, season_type)
+                store_data(conn, schema.pbp, game_data.pbp())
+                store_data(conn, schema.player_tracking_boxscores, game_data.player_tracking_boxscore())
+                store_data(conn, schema.player_tracking_boxscores_team, game_data.player_tracking_boxscore_team())
+                store_data(conn, schema.shots, game_data.shots())
+                store_data(conn, schema.traditional_boxscores, game_data.traditional_boxscore())
+                store_data(conn, schema.traditional_boxscores_team, game_data.traditional_boxscore_team())
+                store_data(conn, schema.advanced_boxscores, game_data.advanced_boxscore())
+                store_data(conn, schema.advanced_boxscores_team, game_data.advanced_boxscore_team())
+                store_data(conn, schema.scoring_boxscores, game_data.scoring_boxscore())
+                store_data(conn, schema.scoring_boxscores_team, game_data.scoring_boxscore_team())
+                store_data(conn, schema.misc_boxscores, game_data.misc_boxscore())
+                store_data(conn, schema.misc_boxscores_team, game_data.misc_boxscore_team())
+                store_data(conn, schema.usage_boxscores, game_data.usage_boxscore())
+                store_data(conn, schema.four_factors_boxscores, game_data.four_factors_boxscore())
+                store_data(conn, schema.four_factors_boxscores_team, game_data.four_factors_boxscore_team())
+                store_data(conn, schema.game_info, game_data.game_info())
+                store_data(conn, schema.game_summary, game_data.game_summary())
+                store_data(conn, schema.line_score, game_data.line_score())
+                store_data(conn, schema.other_stats, game_data.other_stats())
+                store_data(conn, schema.officials, game_data.officials())
+                store_data(conn, schema.inactives, game_data.inactives())
 
-                    db_storage.commit()
-                except:
-                    logging.error('game %s not stored', game_id)
-
-    db_storage.close()
 
 if __name__ == '__main__':
     main()

@@ -5,12 +5,18 @@ import datetime
 from dateutil.rrule import rrule, DAILY
 import logging
 import re
+from sqlalchemy import create_engine
+from sqlalchemy.sql import select
+from pandas import DataFrame
 
+from utils import utils
 from process import pbp
-import storage.db
+from storage import schema
 import scrape.helper
 
 def main():
+    logging.basicConfig(filename='process_pbp.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    config=json.loads(open('config.json').read())
     if len(sys.argv) < 3:
         start_date = datetime.date.today() - datetime.timedelta(1)
         end_date = datetime.date.today() - datetime.timedelta(1)
@@ -39,9 +45,6 @@ def main():
         start_date = datetime.date(int(start_split[0]), int(start_split[1]), int(start_split[2]))
         end_date = datetime.date(int(end_split[0]), int(end_split[1]), int(end_split[2]))
 
-    logging.basicConfig(filename='games.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-    config=json.loads(open('config.json').read())
-
     season = config["season"]
     # make sure season is valid format
     season_pattern = re.compile('\d{4}[-]\d{2}$')
@@ -49,25 +52,31 @@ def main():
         print "Invalid Season format. Example format: 2014-15"
         sys.exit(0)
 
-    db_storage = storage.db.Storage(config['host'], config['username'], config['password'], config['database'])
+    # connect to database
+    username = config['username']
+    password = config['password']
+    host = config['host']
+    database = config['database']
+
+    engine = create_engine('mysql://'+username+':'+password+'@'+host+'/'+database)
+    conn = engine.connect()
 
     for dt in rrule(DAILY, dtstart=start_date, until=end_date):
         games = scrape.helper.get_game_ids_for_date(dt.strftime("%Y-%m-%d"))
         for game_id in games:
             if game_id[:3] == "002" or game_id[:3] == "004":
                 try:
-                    query = "select * from pbp where GAME_ID = '"+game_id+"'"
-                    pbp_data = db_storage.query_df(query)
+                    pbp_query = select([(schema.pbp)]).where(schema.pbp.c.GAME_ID == game_id)
+                    results = conn.execute(pbp_query)
+                    pbp_data = DataFrame(results.fetchall())
+                    pbp_data.columns = results.keys()
 
                     game_data = pbp.Lineups(pbp_data)
                     pbp_with_lineups =  game_data.get_players_on_floor_for_game()
-                    db_storage.insert(pbp_with_lineups, "pbp")
-
-                    db_storage.commit()
+                    conn.execute(schema.pbp.insert(replace_string=""), pbp_with_lineups)
                 except:
-                    logging.error('game %s not stored', game_id)
+                    logging.error(utils.LogException())
 
-    db_storage.close()
 
 if __name__ == '__main__':
     main()
