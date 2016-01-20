@@ -9,7 +9,7 @@ from storage import schema
 from utils import utils
 
 def main():
-    logging.basicConfig(filename='process_pbp.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    logging.basicConfig(filename='logs/process_pbp.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     config=json.loads(open('config.json').read())
 
     # connect to database

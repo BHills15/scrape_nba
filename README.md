@@ -19,35 +19,35 @@ cp sample_config.json config.json
 
 * Create database and tables
 ```
-python setup.py
+python database_setup.py
 ```
 
 * Get games for date range (start date first)
 ```
-python get_games_for_date_range.py YYYY-MM-DD YYYY-MM-DD
+python scripts/get_games_for_date_range.py YYYY-MM-DD YYYY-MM-DD
 ```
 
 * Get player data for games in db
 ```
-python get_player_data.py
+python scripts/get_player_data.py
 ```
 
 * Get sportvu data - can be run daily to get daily snapshot
 ```
-python get_sportvu.py
+python scripts/get_sportvu.py
 ```
 
 * Get synergy data - can be run daily to get daily snapshot
 ```
-python get_synergy.py
+python scripts/get_synergy.py
 ```
 
 * Get players on floor for pbp in database
 ```
-python get_players_on_floor.py
+python scripts/get_players_on_floor.py
 ```
 
 * Make player tracking game logs
 ```
-python make_player_tracking_game_logs.py
+python scripts/make_player_tracking_game_logs.py
 ```

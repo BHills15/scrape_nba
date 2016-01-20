@@ -13,7 +13,7 @@ from utils import utils
 from process import combine_pbp_shot_logs, combine_pbp_rebounds_logs
 
 def main():
-    logging.basicConfig(filename='players.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    logging.basicConfig(filename='logs/players.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     config=json.loads(open('config.json').read())
 
     season = config["season"]

@@ -5,9 +5,9 @@ import re
 import time
 from sqlalchemy import create_engine
 
+from utils import utils
 from storage import schema
 from scrape import sportvu_stats
-from utils import utils
 
 def store_stat(season, season_type, player_or_team, measure_type, is_regular_season, table, connection):
     try:
@@ -18,7 +18,7 @@ def store_stat(season, season_type, player_or_team, measure_type, is_regular_sea
     return None
 
 def main():
-    logging.basicConfig(filename='sportvu.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    logging.basicConfig(filename='logs/sportvu.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     config=json.loads(open('config.json').read())
 
     season = config["season"]

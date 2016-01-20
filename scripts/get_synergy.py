@@ -17,7 +17,7 @@ def store_data(connection, data, table):
     return None
 
 def main():
-    logging.basicConfig(filename='synergy.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    logging.basicConfig(filename='logs/synergy.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     config=json.loads(open('config.json').read())
 
     season = config["season"]

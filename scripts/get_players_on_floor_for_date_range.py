@@ -15,7 +15,7 @@ from storage import schema
 import scrape.helper
 
 def main():
-    logging.basicConfig(filename='process_pbp.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    logging.basicConfig(filename='logs/process_pbp.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     config=json.loads(open('config.json').read())
     if len(sys.argv) < 3:
         start_date = datetime.date.today() - datetime.timedelta(1)

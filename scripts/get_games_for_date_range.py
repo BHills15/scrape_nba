@@ -21,7 +21,7 @@ def store_data(connection, table, data):
     return None
 
 def main():
-    logging.basicConfig(filename='games.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    logging.basicConfig(filename='logs/games.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     config=json.loads(open('config.json').read())
 
     if len(sys.argv) < 3:
