@@ -6,7 +6,7 @@ import scrape.helper
 class Lineups:
     def __init__(self, game_data):
         self.moments_base_url = "http://stats.nba.com/stats/locations_getmoments/"
-        self.boxscore_base_url = "http://stats.nba.com/stats/boxscore?GameID=<game_id>&RangeType=2&StartPeriod=0&EndPeriod=0&StartRange=<start>&EndRange=<end>"
+        self.boxscore_base_url = "http://stats.nba.com/stats/boxscore"
         self.game_data = game_data
 
     def get_players_on_floor_for_moment(self, game_id, event_id):
@@ -30,8 +30,8 @@ class Lineups:
 
     def get_period_starters_from_boxscore(self, period, game_id, period_number):
         # get players who started period by getting time filtered box score for start of period until first sub
-        home_team_id = period[period['HOMEDESCRIPTION'].str.contains("MISS")]["PLAYER1_TEAM_ID"].min()
-        visitor_team_id = period[period['VISITORDESCRIPTION'].str.contains("MISS")]["PLAYER1_TEAM_ID"].min()
+        home_team_id = period[(period['HOMEDESCRIPTION'].str.contains("MISS")) & (period['HOMEDESCRIPTION'] != None)]["PLAYER1_TEAM_ID"].min()
+        visitor_team_id = period[(period['VISITORDESCRIPTION'].str.contains("MISS")) & (period['VISITORDESCRIPTION'] != None)]["PLAYER1_TEAM_ID"].min()
 
         split = period['PCTIMESTRING'].str.split(":")
         period['seconds'] = split.map(lambda x: int(x[0])*60 + int(x[1]))
@@ -92,15 +92,16 @@ class Lineups:
         start_event_num = period[period['PCTIMESTRING'] != "12:00"]['EVENTNUM'].min()
         period_number = period['PERIOD'].mean()
         first_sub = period[period['EVENTMSGTYPE'] == 8]['EVENTNUM'].min()
-        while True:
-            if start_event_num >= first_sub:
-                period_starters = self.get_period_starters_from_boxscore(period, game_id, period_number)
-                break
-            try:
-                period_starters = self.get_players_on_floor_for_moment(game_id, start_event_num)
-                break
-            except:
-                start_event_num += 1
+        # while True:
+        #     if start_event_num >= first_sub:
+        #         period_starters = self.get_period_starters_from_boxscore(period, game_id, period_number)
+        #         break
+        #     try:
+        #         period_starters = self.get_players_on_floor_for_moment(game_id, start_event_num)
+        #         break
+        #     except:
+        #         start_event_num += 1
+        period_starters = self.get_period_starters_from_boxscore(period, game_id, period_number)
 
         period['HOME_PLAYER1'] = period_starters['home_player_ids'][0]
         period['HOME_PLAYER2'] = period_starters['home_player_ids'][1]
