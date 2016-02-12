@@ -3,16 +3,17 @@ import urllib2
 import requests
 
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/47.0.2526.73 Chrome/47.0.2526.73 Safari/537.36"
+REFERER = "http://stats.nba.com/scores/"
 
 def get_data_from_url_with_parameters(base_url, parameters, index):
-    response = requests.get(base_url, params=parameters, headers={'User-Agent': USER_AGENT})
+    response = requests.get(base_url, params=parameters, headers={'User-Agent': USER_AGENT, 'referer': REFERER})
     data = response.json()
     headers = data['resultSets'][index]['headers']
     rows = data['resultSets'][index]['rowSet']
     return [dict(zip(headers, row)) for row in rows]
 
 def get_data_from_url_with_parameters_add_game_id(base_url, parameters, game_id, index):
-    response = requests.get(base_url, params=parameters, headers={'User-Agent': USER_AGENT})
+    response = requests.get(base_url, params=parameters, headers={'User-Agent': USER_AGENT, 'referer': REFERER})
     data = response.json()
     headers = data['resultSets'][index]['headers']
     headers = ["GAME_ID"] + headers
@@ -20,7 +21,7 @@ def get_data_from_url_with_parameters_add_game_id(base_url, parameters, game_id,
     return [dict(zip(headers, [game_id] + row)) for row in rows]
 
 def get_data_from_url_with_parameters_add_player_id(base_url, parameters, player_id, player_name, index):
-    response = requests.get(base_url, params=parameters, headers={'User-Agent': USER_AGENT})
+    response = requests.get(base_url, params=parameters, headers={'User-Agent': USER_AGENT, 'referer': REFERER})
     data = response.json()
     headers = data['resultSets'][index]['headers']
     headers = ["PLAYER_ID", "PLAYER_NAME"] + headers
